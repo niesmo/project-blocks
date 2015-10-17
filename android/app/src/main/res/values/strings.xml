@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">ProjectBlocks</string>
 
-    <string name="hello_world">Hello world!</string>
+    <string name="title">Test Version 1.2</string>
+    <string name="loc">My Location</string>
+    <string name="pre">Nearest Cafe</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_test">Test</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_my_location">CurrentMap</string>
 </resources>
