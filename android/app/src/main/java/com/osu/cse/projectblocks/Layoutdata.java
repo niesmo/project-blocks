@@ -6,9 +6,18 @@ package com.osu.cse.projectblocks;
 public class Layoutdata {
     private String FoodName="";
     private String FoodImage="";
-    private String FoodPrice;
+    private double FoodPrice;
 
 
+    private boolean isSelected;
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setIsSelected(boolean isSelected) {
+        this.isSelected = isSelected;
+    }
     public String getFoodName() {
         return this.FoodName;
     }
@@ -17,7 +26,7 @@ public class Layoutdata {
         return this.FoodImage;
     }
 
-    public String getFoodPrice() {
+    public double getFoodPrice() {
         return this.FoodPrice;
     }
 
@@ -30,7 +39,7 @@ public class Layoutdata {
         this.FoodImage = foodImage;
     }
 
-    public void setFoodPrice(String foodPrice) {
+    public void setFoodPrice(double foodPrice) {
         this.FoodPrice = foodPrice;
     }
 

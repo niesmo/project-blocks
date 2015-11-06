@@ -32,10 +32,11 @@
             >
             <TableRow>
                 <TextView
-                    android:id="@+id/text"
+                    android:id="@+id/foodname"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:layout_weight="1" android:layout_gravity="left|center_vertical"
+
+                    android:layout_gravity="left|center_vertical"
                     android:textSize="16sp"
                     android:layout_marginLeft="10dip"
                     android:layout_marginTop="4dip"
@@ -46,10 +47,10 @@
             <TableRow>
                 <TextView
                     android:text=""
-                    android:id="@+id/text1"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:layout_weight="1"
+                    android:id="@+id/foodpri"
+                    android:layout_height="fill_parent"
+                    android:layout_width="fill_parent"
+
                     android:layout_gravity="left|center_vertical"
                     android:textSize="16sp"
                     android:textColor="#000000"
@@ -60,7 +61,6 @@
         </TableLayout>
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                      xmlns:tools="http://schemas.android.com/tools"
                       android:layout_width="110dp"
                       android:layout_height="match_parent"
                       android:paddingRight="10dp"
@@ -77,7 +77,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/checkBox"
             android:layout_column="3"
-            android:onClick="add"/>
+            />
 
     </TableRow>
 

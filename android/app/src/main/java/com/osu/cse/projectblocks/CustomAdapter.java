@@ -2,12 +2,12 @@ package com.osu.cse.projectblocks;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,16 +21,17 @@ public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
     private Activity activity;
     private ArrayList data;
     private static LayoutInflater inflater=null;
-    public Resources res;
-    Layoutdata tempValues=null;
+   // public Resources res;
+    Food tempValues=null;
 
-    int index=0;
+   // int totalmoney=0;
 
 
-    public CustomAdapter(Activity a, ArrayList d, Resources rescur) {
+    public CustomAdapter(Activity a, ArrayList d) {
         activity = a;
         data = d;
-        res = rescur;
+
+
 
         inflater=(LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -52,10 +53,11 @@ public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
     }
 
     public static class ViewHolder{
-        public TextView text;
-        public TextView text1;
-        public TextView textWide;
+        public TextView foodname;
+        public TextView foodpri;
+        //public TextView textWide;
         public ImageView image;
+        public CheckBox checkbox;
 
 
     }
@@ -74,11 +76,11 @@ public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
             /****** View Holder Object to contain tabitem.xml file elements ******/
 
             holder = new ViewHolder();
-            holder.text = (TextView) vi.findViewById(R.id.text);
-            holder.text1=(TextView)vi.findViewById(R.id.text1);
+            holder.foodname = (TextView) vi.findViewById(R.id.foodname);
+            holder.foodpri=(TextView)vi.findViewById(R.id.foodpri);
             holder.image=(ImageView)vi.findViewById(R.id.image);
-            //holder.checkbox=(CheckBox)vi.findViewById(R.id.checkBox);
-
+            holder.checkbox=(CheckBox)vi.findViewById(R.id.checkBox);
+            holder.checkbox.setOnCheckedChangeListener((MainActivity)activity);
 
             /************  Set holder with LayoutInflater ************/
             vi.setTag( holder );
@@ -88,31 +90,40 @@ public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
 
         if(data.size()<=0)
         {
-            holder.text.setText("No Data");
+            holder.foodname.setText("No Data");
 
         }
         else
         {
             /***** Get each Model object from Arraylist ********/
             tempValues=null;
-            tempValues = ( Layoutdata ) data.get( position );
+            tempValues = ( Food ) data.get( position );
 
             /************  Set Model values in Holder elements ***********/
 
-            holder.text.setText( tempValues.getFoodName() );
-            holder.text1.setText( tempValues.getFoodPrice() );
+
+            holder.foodname.setText(tempValues.getFoodname());
+            holder.foodpri.setText("$" + tempValues.getFoodprice());
            // holder.image.setImageResource(res.getIdentifier("com.androidexample.customlistview:drawable/"+tempValues.getFoodImage(),null,null));
+           // holder.checkbox.setChecked(tempValues.isSelected());
+            //holder.checkbox.setTag(tempValues);
+
+
 
             /******** Set Item Click Listner for LayoutInflater for each row *******/
-
             vi.setOnClickListener(new OnItemClickListener(position));
+
         }
         return vi;
     }
 
+
+
     public void onClick(View v) {
         Log.v("CustomAdapter", "=====Row button clicked=====");
     }
+
+
 
     /********* Called when Item click in ListView ************/
     private class OnItemClickListener  implements View.OnClickListener{
@@ -126,8 +137,7 @@ public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
         @Override
         public void onClick(View arg0) {
 
-
-            CustomListViewAndroidExample sct = (CustomListViewAndroidExample)activity;
+            MainActivity sct = (MainActivity)activity;
 
 
 

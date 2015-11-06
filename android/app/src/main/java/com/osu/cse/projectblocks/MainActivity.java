@@ -1,16 +1,62 @@
 package com.osu.cse.projectblocks;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 
+public class MainActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener{
+
+    ListView list;
+    CustomAdapter adapter;
+    public  MainActivity CustomListView = null;
+    public ArrayList<Food> CustomListViewValuesArr = new ArrayList<Food>();
+    public double totalprice=0;
+    //TextView mTextView_price;
+    TextView mTextView_money;
+    TextView mTextView_block;
+    GetFood mGetFood;
+    Button mMaximum;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        CustomListView = this;
+
+        /******** Take some data in Arraylist ( CustomListViewValuesArr ) ***********/
+        setListData();
+
+        // Resources res =getResources();
+        list= (ListView)findViewById( R.id.list );  // List defined in XML ( See Below )
+        mTextView_money=(TextView)findViewById(R.id.price);
+        mTextView_block=(TextView)findViewById(R.id.block);
+        mMaximum=(Button)findViewById(R.id.maximum);
+
+
+        /**************** Create Custom Adapter *********/
+        adapter=new CustomAdapter( CustomListView, CustomListViewValuesArr);
+        list.setAdapter(adapter);
+
+        mMaximum.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Perform action on click
+                Intent toresult=new Intent(MainActivity.this, Result.class);
+
+                toresult.putExtra("totalprice",String.valueOf(totalprice));
+                startActivity(toresult);
+            }
+        });
+
     }
 
     @Override
@@ -25,13 +71,70 @@ public class MainActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case R.id.find_food:
+                return true;
+            case R.id.find_cafe:
+                Intent i = new Intent(MainActivity.this, MapsActivity.class);
+                startActivity(i);
+                break;
+            case R.id.setting_preference:
+                return true;
+            case R.id.history:
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+    /****** Function to set data in ArrayList *************/
+    public void setListData()
+    {
+        CustomListViewValuesArr=mGetFood.getInfo();
+    }
+
+
+    /*****************  This function used by adapter ****************/
+    public void onItemClick(int mPosition)
+    {
+
+        Food tempValues = ( Food ) CustomListViewValuesArr.get(mPosition);
+
+
+        // SHOW ALERT
+
+        Toast.makeText(CustomListView, "" + tempValues.getFoodname() + " Image:" + tempValues.getFoodimage()
+                + "FoodPrice:" + tempValues.getFoodprice(), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        int pos=list.getPositionForView(buttonView);
+        int numblock=0;
+        DecimalFormat df = new DecimalFormat("0.00");
+
+        if(pos!= ListView.INVALID_POSITION)
+        {
+            Food d=CustomListViewValuesArr.get(pos);
+            d.setIsSelected(isChecked);
+            // Toast.makeText(this,"yes", Toast.LENGTH_SHORT).show();
+            if(isChecked)
+                totalprice += d.getFoodprice();
+            else
+                totalprice -= d.getFoodprice();
+
+            mTextView_money.setText("$"+df.format(totalprice));
+            if(totalprice%5>0)
+                numblock=(int)totalprice/5+1;
+            else
+                numblock=(int)totalprice/5;
+
+            mTextView_block.setText(Integer.toString(numblock));
+
+        }
+    }
+
+
+
+
 }
