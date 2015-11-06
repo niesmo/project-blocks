@@ -1,8 +1,6 @@
 package com.osu.cse.projectblocks;
 
-import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,7 +19,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate() called");
+
         setContentView(R.layout.activity_main);
+
         btnLocation = (Button) findViewById(R.id.get_location);
         btnLocation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        btnPreference = (Button) findViewById(R.id.setting_preference);
+        btnPreference = (Button) findViewById(R.id.get_cafeteria);
         btnPreference.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
     }
 
     @Override
@@ -80,12 +81,24 @@ public class MainActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        //int id = item.getItemId();
+        switch (item.getItemId()) {
+            case R.id.find_food:
+                return true;
+            case R.id.find_cafe:
+                Intent i = new Intent(MainActivity.this, MapsActivity.class);
+                startActivity(i);
+                break;
+            case R.id.setting_preference:
+                return true;
+            case R.id.history:
+                return true;
+        }
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        //if (id == R.id.action_settings) {
+        //    return true;
+        //}
 
         return super.onOptionsItemSelected(item);
     }
