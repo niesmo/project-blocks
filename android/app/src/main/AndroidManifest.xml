@@ -43,6 +43,10 @@
             android:name=".FindFood"
             android:label="@string/title_activity_find_food" >
         </activity>
+        <activity
+            android:name=".Result"
+            android:label="@string/title_activity_result" >
+        </activity>
     </application>
 
 </manifest>

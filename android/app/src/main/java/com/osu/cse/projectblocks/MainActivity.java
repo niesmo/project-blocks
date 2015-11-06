@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         btnLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, MyLocation.class);
+                Intent i = new Intent(MainActivity.this, Result.class);
                 startActivity(i);
             }
         });
