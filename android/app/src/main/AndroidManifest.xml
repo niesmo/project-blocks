@@ -7,9 +7,10 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:name=".CustomListViewAndroidExample"
+            android:label="@string/title_activity_custom_list_view_android_example" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
