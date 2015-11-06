@@ -36,10 +36,6 @@
             android:label="@string/title_activity_maps" >
         </activity>
         <activity
-            android:name=".MyLocation"
-            android:label="@string/title_activity_my_location" >
-        </activity>
-        <activity
             android:name=".FindFood"
             android:label="@string/title_activity_find_food" >
         </activity>

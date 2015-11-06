@@ -1,5 +1,6 @@
 package com.osu.cse.projectblocks;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,12 +12,12 @@ import java.util.ArrayList;
 
 public class Result extends AppCompatActivity {
     //Need to get from another activity
-    double totalmoney;
+    double totalmoney = 7.25;
     int block;
     int len;
     double money;
     ArrayList<Food> allfood;
-    ArrayList<String> result;
+    ArrayList<String> result = new ArrayList<>();
 
     ListView listview;
     ArrayAdapter<String> adapter;
@@ -26,31 +27,32 @@ public class Result extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
 
-        totalmoney = 6.75;
         block = (int) totalmoney/5; block++;
-        money = (double) block*2 - totalmoney;
+        money = (double) block*5 - totalmoney;
         allfood = GetFood.getInfo();
         len = allfood.size();
-        helper(0.0, new ArrayList<String>());
+        combination(0, 0.0, new ArrayList<String>());
 
         listview = (ListView)findViewById(R.id.Result_listView);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, result);
         listview.setAdapter(adapter);
     }
 
-    private void helper(double sum, ArrayList<String> list){
-        if(sum == money){
+    private void combination(int start, double sum, ArrayList<String> list){
+        if((money-sum) < 1){
             StringBuffer sb = new StringBuffer();
             for(int i=0; i<list.size(); i++){
-                sb.append(list.get(i)+" ");
+                sb.append("+" + list.get(i));
             }
-            result.add(sb.toString());
+            sb.append("=$");
+            sb.append(totalmoney+sum);
+            result.add(sb.substring(1).toString());
             return;
         }
-        for(int i=0; i<len; i++){
-            if(allfood.get(i).getPrice()+sum <= money){
+        for(int i=start; i<len; i++){
+            if((allfood.get(i).getPrice() + sum) <= money){
                 list.add(allfood.get(i).getName());
-                helper(allfood.get(i).getPrice() + sum, list);
+                combination(i, allfood.get(i).getPrice() + sum, list);
                 list.remove(list.size()-1);
             }
         }
@@ -59,7 +61,7 @@ public class Result extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_result, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -68,11 +70,17 @@ public class Result extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case R.id.find_food:
+                return true;
+            case R.id.find_cafe:
+                Intent i = new Intent(Result.this, MapsActivity.class);
+                startActivity(i);
+                break;
+            case R.id.setting_preference:
+                return true;
+            case R.id.history:
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

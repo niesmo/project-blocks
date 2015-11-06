@@ -20,7 +20,6 @@ public class GetFood {
         //Entrees
         foodInfo.add(new Food("Pepperoni Flatbread pizza", 5.5, null, null));
         foodInfo.add(new Food("Chicken Quesadilla", 5.5, null, null));
-        foodInfo.add(new Food("Blueberry Bagel", 2.0, null, null));
         //Sandwiches
         foodInfo.add(new Food("Ham Bagel Sandwich", 4.0, null, null));
         foodInfo.add(new Food("Italian Sub", 5.75, null, null));
