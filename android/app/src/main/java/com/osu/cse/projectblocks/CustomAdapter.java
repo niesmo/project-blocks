@@ -11,6 +11,9 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.osu.cse.projectblocks.activities.MainActivity;
+import com.osu.cse.projectblocks.models.Food;
+
 import java.util.ArrayList;
 
 /**

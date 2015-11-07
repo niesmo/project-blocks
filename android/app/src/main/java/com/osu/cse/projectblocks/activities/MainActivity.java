@@ -1,4 +1,4 @@
-package com.osu.cse.projectblocks;
+package com.osu.cse.projectblocks.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,11 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.osu.cse.projectblocks.CustomAdapter;
+import com.osu.cse.projectblocks.R;
+import com.osu.cse.projectblocks.data.GetFood;
+import com.osu.cse.projectblocks.models.Food;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
