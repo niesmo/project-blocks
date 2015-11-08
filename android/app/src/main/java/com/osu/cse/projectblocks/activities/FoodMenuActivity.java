@@ -12,14 +12,20 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 import com.osu.cse.projectblocks.R;
 import com.osu.cse.projectblocks.data.DataApi;
+import com.osu.cse.projectblocks.models.Person;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 
 public class FoodMenuActivity extends AppCompatActivity {
     private DataApi repository;
+    private final Gson gson = new Gson();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,13 +37,24 @@ public class FoodMenuActivity extends AppCompatActivity {
 
         final TextView mTextView = (TextView) findViewById(R.id.response);
 
-        repository.getCafeterias(this, new Response.Listener<JSONObject>(){
+        repository.getCafeterias(this, new Response.Listener<JSONObject>() {
 
             @Override
-            public void onResponse(JSONObject response) {
-                mTextView.setText(response.toString());
+            public void onResponse(JSONObject response){
+                try {
+                    String firstPerson = response.getJSONArray("results")
+                            .getJSONObject(0)
+                            .getJSONObject("value")
+                            .toString();
+
+
+                    Person p = gson.fromJson(firstPerson, Person.class);
+                    mTextView.setText(p.getName());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
-        }, new Response.ErrorListener(){
+        }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
