@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
 
@@ -76,15 +76,21 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+        Intent i;
         switch (item.getItemId()) {
             case R.id.find_food:
-                return true;
-            case R.id.find_cafe:
-                Intent i = new Intent(MainActivity.this, MapsActivity.class);
+                i = new Intent(MainActivity.this, FoodMenuActivity.class);
                 startActivity(i);
                 break;
+
+            case R.id.find_cafe:
+                i = new Intent(MainActivity.this, MapsActivity.class);
+                startActivity(i);
+                break;
+
             case R.id.setting_preference:
                 return true;
+
             case R.id.history:
                 return true;
         }
