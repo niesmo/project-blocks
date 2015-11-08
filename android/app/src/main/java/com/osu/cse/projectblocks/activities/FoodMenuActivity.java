@@ -14,6 +14,7 @@ import com.osu.cse.projectblocks.R;
 import com.osu.cse.projectblocks.data.DataApi;
 import com.osu.cse.projectblocks.data.OrchestrateDataParser;
 import com.osu.cse.projectblocks.models.Cafeteria;
+import com.osu.cse.projectblocks.models.Food;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,22 +35,22 @@ public class FoodMenuActivity extends AppCompatActivity {
         repository = DataApi.getInstance();
 
         // setting up the Orchestrate data parser
-        final OrchestrateDataParser<Cafeteria> cafeteriaParser = new OrchestrateDataParser();
+        final OrchestrateDataParser<Food> foodParser = new OrchestrateDataParser();
 
         final TextView mTextView = (TextView) findViewById(R.id.response);
 
-        repository.getCafeterias(this, new Response.Listener<JSONObject>() {
+        repository.getFoods(this, new Response.Listener<JSONObject>() {
 
             @Override
-            public void onResponse(JSONObject response){
+            public void onResponse(JSONObject response) {
                 try {
-                    List<Cafeteria> list;
-                    list = cafeteriaParser.parseArray(response, Cafeteria.class);
+                    List<Food> list;
+                    list = foodParser.parseArray(response, Food.class);
 
                     String names = "";
-                    for(Iterator<Cafeteria> i = list.iterator(); i.hasNext();) {
-                        Cafeteria c = i.next();
-                        names += c.getName() + "\n";
+                    for (Iterator<Food> i = list.iterator(); i.hasNext(); ) {
+                        Food f = i.next();
+                        names += f.getName() + "\n";
                     }
 
                     mTextView.setText(names);
