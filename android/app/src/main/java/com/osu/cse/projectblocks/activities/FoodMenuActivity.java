@@ -15,11 +15,17 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.osu.cse.projectblocks.R;
 import com.osu.cse.projectblocks.data.DataApi;
+import com.osu.cse.projectblocks.data.OrchestrateDataParser;
+import com.osu.cse.projectblocks.models.Cafeteria;
 import com.osu.cse.projectblocks.models.Person;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 
 public class FoodMenuActivity extends AppCompatActivity {
@@ -34,6 +40,7 @@ public class FoodMenuActivity extends AppCompatActivity {
 
         // Setting up the repository
         repository = DataApi.getInstance();
+        final OrchestrateDataParser<Cafeteria> cafeteriaParser = new OrchestrateDataParser();
 
         final TextView mTextView = (TextView) findViewById(R.id.response);
 
@@ -42,14 +49,25 @@ public class FoodMenuActivity extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response){
                 try {
-                    String firstPerson = response.getJSONArray("results")
-                            .getJSONObject(0)
-                            .getJSONObject("value")
-                            .toString();
+                    List<Cafeteria> list;
+                    list = cafeteriaParser.parseArray(response, Cafeteria.class);
 
+                    String emails = "";
+                    for(Iterator<Cafeteria> i = list.iterator(); i.hasNext();) {
+                        Cafeteria c = i.next();
+                        emails += c.getName() + "\n";
+                    }
+//                    List<Person> list = new ArrayList<Person>();
+//                    list = personParser.parseArray(response, Person.class);
+//
+////                    Person p = personParser.parseObject(response, Person.class, null);
+//                    String emails = "";
+//                    for(Iterator<Person> i = list.iterator(); i.hasNext();) {
+//                        Person p = i.next();
+//                        emails += p.getEmail() + "\n";
+//                    }
 
-                    Person p = gson.fromJson(firstPerson, Person.class);
-                    mTextView.setText(p.getName());
+                    mTextView.setText(emails);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
