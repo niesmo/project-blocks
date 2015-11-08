@@ -34,13 +34,28 @@ public class OrchestrateDataParser<T> {
         // for all the elements in the
         for(int i=0;i<count;i++){
             // get the i-th result from what was sent
-            // JSONObject row = jsonObject.getJSONArray("results").getJSONObject(i);
+            JSONObject row = jsonObject.getJSONArray("results").getJSONObject(i);
+
+            // get the orchestrate key
+            String orchestrateKey = row.getJSONObject("path").getString("key");
+
+            // get the collection
+            String orchestrateCollection  = row.getJSONObject("path").getString("collection");
+
+            // get the ref
+            String orchestrateRef = row.getJSONObject("path").getString("key");
 
             // read one object from the array
-            T obj = this.parseObject(jsonObject, c, i);
+            OrchestrateObject obj = (OrchestrateObject)this.parseObject(row.getJSONObject("value"), c);
+
+            // add the orchestrate specific things to the object
+            obj.setCollection(orchestrateCollection);
+            obj.setRef(orchestrateRef);
+            obj.setKey(orchestrateKey);
 
             // add it to the list
-            objects.add(obj);
+            //noinspection unchecked
+            objects.add((T)obj);
         }
 
         // return the list
@@ -52,39 +67,15 @@ public class OrchestrateDataParser<T> {
      * Type T must extend OrchestrateObject as that is assumed
      * @param jsonObject
      * @param c The class of the object that will be returned (This is because Java does not allow T.class)
-     * @param index index of the row in the result that need to be parsed
      * @return The serialized object
      * @throws JSONException
      */
-    public T parseObject(JSONObject jsonObject, Class c, Integer index) throws JSONException {
-        if(index == null){
-            index = 0;
-        }
-        // get the first results from what was returned
-        JSONObject result = jsonObject.getJSONArray("results").getJSONObject(index);
-
-        // get the orchestrate key
-        String orchestrateKey = result.getJSONObject("path").getString("key");
-
-        // get the collection
-        String orchestrateCollection  = result.getJSONObject("path").getString("collection");
-
-        // get the ref
-        String orchestrateRef = result.getJSONObject("path").getString("key");
-
-
-        // get the actual object in String
-        String objString = result
-                .getJSONObject("value")
-                .toString();
+    public T parseObject(JSONObject jsonObject, Class c) throws JSONException {
+        // get the object in String
+        String objString = jsonObject.toString();
 
         // converting the json to an object
         OrchestrateObject obj = (OrchestrateObject)gson.fromJson(objString, c);
-
-        // setting the key
-        obj.setKey(orchestrateKey);
-        obj.setRef(orchestrateRef);
-        obj.setCollection(orchestrateCollection);
 
         //noinspection unchecked
         return (T)obj;

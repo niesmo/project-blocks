@@ -30,7 +30,7 @@ public class FoodMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_menu);
 
-        // Setting up the repository (NOTE this is a Singleton class)
+        // Setting up the repository (NOTE this a Singleton class)
         repository = DataApi.getInstance();
 
         // setting up the Orchestrate data parser

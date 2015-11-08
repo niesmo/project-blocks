@@ -37,7 +37,7 @@ public class DataApi {
     }
 
     public static void getCafeterias(Context c, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener){
-        String resource ="cafeterias";
+        String resource ="cafeterias?limit=100";
 
         // create the request
         OrchestrateJsonObjectRequest jor = new OrchestrateJsonObjectRequest(resource, listener, errorListener);

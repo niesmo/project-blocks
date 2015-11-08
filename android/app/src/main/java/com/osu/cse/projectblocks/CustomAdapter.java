@@ -105,8 +105,8 @@ public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
             /************  Set Model values in Holder elements ***********/
 
 
-            holder.foodname.setText(tempValues.getFoodname());
-            holder.foodpri.setText("$" + tempValues.getFoodprice());
+            holder.foodname.setText(tempValues.getName());
+            holder.foodpri.setText("$" + tempValues.getPrice());
            // holder.image.setImageResource(res.getIdentifier("com.androidexample.customlistview:drawable/"+tempValues.getFoodImage(),null,null));
            // holder.checkbox.setChecked(tempValues.isSelected());
             //holder.checkbox.setTag(tempValues);

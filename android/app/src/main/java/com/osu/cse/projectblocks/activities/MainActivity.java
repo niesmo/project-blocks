@@ -114,8 +114,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
         // SHOW ALERT
 
-        Toast.makeText(CustomListView, "" + tempValues.getFoodname() + " Image:" + tempValues.getFoodimage()
-                + "FoodPrice:" + tempValues.getFoodprice(), Toast.LENGTH_LONG).show();
+        Toast.makeText(CustomListView, tempValues.getName() + " FoodPrice:" + tempValues.getPrice(), Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -130,9 +129,9 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
             d.setIsSelected(isChecked);
             // Toast.makeText(this,"yes", Toast.LENGTH_SHORT).show();
             if(isChecked)
-                totalprice += d.getFoodprice();
+                totalprice += d.getPrice();
             else
-                totalprice -= d.getFoodprice();
+                totalprice -= d.getPrice();
 
             mTextView_money.setText("$"+df.format(totalprice));
             if(totalprice%5>0)

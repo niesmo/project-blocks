@@ -56,9 +56,9 @@ public class Result extends AppCompatActivity {
             return;
         }
         for(int i=start; i<len; i++){
-            if((allfood.get(i).getFoodprice() + sum) <= money){
-                list.add(allfood.get(i).getFoodname());
-                combination(i, allfood.get(i).getFoodprice() + sum, list);
+            if((allfood.get(i).getPrice() + sum) <= money){
+                list.add(allfood.get(i).getName());
+                combination(i, allfood.get(i).getPrice() + sum, list);
                 list.remove(list.size()-1);
             }
         }
