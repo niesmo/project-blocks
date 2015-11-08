@@ -7,39 +7,33 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.osu.cse.projectblocks.R;
 import com.osu.cse.projectblocks.data.DataApi;
 import com.osu.cse.projectblocks.data.OrchestrateDataParser;
 import com.osu.cse.projectblocks.models.Cafeteria;
-import com.osu.cse.projectblocks.models.Person;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 
 public class FoodMenuActivity extends AppCompatActivity {
     private DataApi repository;
-    private final Gson gson = new Gson();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_menu);
 
-        // Setting up the repository
+        // Setting up the repository (NOTE this is a Singleton class)
         repository = DataApi.getInstance();
+
+        // setting up the Orchestrate data parser
         final OrchestrateDataParser<Cafeteria> cafeteriaParser = new OrchestrateDataParser();
 
         final TextView mTextView = (TextView) findViewById(R.id.response);
@@ -52,22 +46,13 @@ public class FoodMenuActivity extends AppCompatActivity {
                     List<Cafeteria> list;
                     list = cafeteriaParser.parseArray(response, Cafeteria.class);
 
-                    String emails = "";
+                    String names = "";
                     for(Iterator<Cafeteria> i = list.iterator(); i.hasNext();) {
                         Cafeteria c = i.next();
-                        emails += c.getName() + "\n";
+                        names += c.getName() + "\n";
                     }
-//                    List<Person> list = new ArrayList<Person>();
-//                    list = personParser.parseArray(response, Person.class);
-//
-////                    Person p = personParser.parseObject(response, Person.class, null);
-//                    String emails = "";
-//                    for(Iterator<Person> i = list.iterator(); i.hasNext();) {
-//                        Person p = i.next();
-//                        emails += p.getEmail() + "\n";
-//                    }
 
-                    mTextView.setText(emails);
+                    mTextView.setText(names);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
