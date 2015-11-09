@@ -54,8 +54,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".FoodMenuItemActivity"
-            android:label="@string/title_activity_food_menu_item" >
+            android:name=".activities.cafeteria.list.CafeteriaListActivity"
+            android:label="@string/title_activity_cafeteria_list" >
         </activity>
     </application>
 

@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.osu.cse.projectblocks.CustomAdapter;
 import com.osu.cse.projectblocks.R;
+import com.osu.cse.projectblocks.activities.cafeteria.list.CafeteriaListActivity;
 import com.osu.cse.projectblocks.activities.food.menu.FoodMenuActivity;
 import com.osu.cse.projectblocks.data.Repository;
 import com.osu.cse.projectblocks.models.Food;
@@ -95,7 +96,8 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
             // find cafeteria menu item
             case R.id.find_cafe:
-                i = new Intent(MainActivity.this, MapsActivity.class);
+                i = new Intent(MainActivity.this, CafeteriaListActivity.class);
+//                i = new Intent(MainActivity.this, MapsActivity.class);
                 startActivity(i);
                 break;
 

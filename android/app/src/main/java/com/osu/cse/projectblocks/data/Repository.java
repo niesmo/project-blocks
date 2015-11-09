@@ -2,6 +2,7 @@ package com.osu.cse.projectblocks.data;
 
 import android.util.Log;
 
+import com.osu.cse.projectblocks.models.Cafeteria;
 import com.osu.cse.projectblocks.models.Food;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class Repository {
     private static final String TAG = Repository.class.getName();
 
     private static List<Food> _foodsCached;
+    private static List<Cafeteria> _cafeteriasCached;
     private static List<String> _categoriesCached;
     private static HashMap<String, List<Food>> _foodByCategoryCached;
 
@@ -58,5 +60,9 @@ public class Repository {
     }
     public static List<Food> getAllFoodInCategory(String category){
         return _foodByCategoryCached.get(category);
+    }
+
+    public static void cacheCafeterias(List<Cafeteria> cafeterias) {
+        _cafeteriasCached = cafeterias;
     }
 }

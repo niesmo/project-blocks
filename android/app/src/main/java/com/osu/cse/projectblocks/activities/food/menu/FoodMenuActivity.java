@@ -3,12 +3,10 @@ package com.osu.cse.projectblocks.activities.food.menu;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
@@ -16,6 +14,7 @@ import com.android.volley.VolleyError;
 import com.osu.cse.projectblocks.R;
 import com.osu.cse.projectblocks.activities.MainActivity;
 import com.osu.cse.projectblocks.activities.MapsActivity;
+import com.osu.cse.projectblocks.activities.cafeteria.list.CafeteriaListActivity;
 import com.osu.cse.projectblocks.data.DataApi;
 import com.osu.cse.projectblocks.data.Repository;
 import com.osu.cse.projectblocks.data.OrchestrateDataParser;
@@ -46,7 +45,7 @@ public class FoodMenuActivity extends AppCompatActivity {
         final OrchestrateDataParser<Food> foodParser = new OrchestrateDataParser();
 
 
-        db.getFoods(this, new Response.Listener<JSONObject>() {
+        db.getAllFoods(this, new Response.Listener<JSONObject>() {
 
             @Override
             public void onResponse(JSONObject response) {
@@ -110,7 +109,8 @@ public class FoodMenuActivity extends AppCompatActivity {
 
             // find cafeteria menu item
             case R.id.find_cafe:
-                i = new Intent(FoodMenuActivity.this, MapsActivity.class);
+                i = new Intent(FoodMenuActivity.this, CafeteriaListActivity.class);
+//                i = new Intent(FoodMenuActivity.this, MapsActivity.class);
                 startActivity(i);
                 break;
 
