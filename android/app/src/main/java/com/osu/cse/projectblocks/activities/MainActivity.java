@@ -32,11 +32,14 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     TextView mTextView_block;
     GetFood mGetFood;
     Button mMaximum;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         CustomListView = this;
+
+
 
         /******** Take some data in Arraylist ( CustomListViewValuesArr ) ***********/
         setListData();
@@ -78,21 +81,30 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         // as you specify a parent activity in AndroidManifest.xml.
         Intent i;
         switch (item.getItemId()) {
+            // home page menu item
+            case R.id.home_menu_item:
+               return true;
+
+            // Find food menu item
             case R.id.find_food:
                 i = new Intent(MainActivity.this, FoodMenuActivity.class);
                 startActivity(i);
                 break;
 
+            // find cafeteria menu item
             case R.id.find_cafe:
                 i = new Intent(MainActivity.this, MapsActivity.class);
                 startActivity(i);
                 break;
 
+            // preference menu item
             case R.id.setting_preference:
                 return true;
 
+            // history menu item
             case R.id.history:
                 return true;
+
         }
 
         return super.onOptionsItemSelected(item);

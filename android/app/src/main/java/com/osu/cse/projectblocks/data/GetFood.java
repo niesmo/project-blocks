@@ -8,11 +8,19 @@ import java.util.ArrayList;
  * Created by Yiran on 11/5/2015.
  */
 public class GetFood {
+
+
+
+    private static ArrayList<Food> foodInfo = new ArrayList<>();
+    public void setInfo(String FoodName,double FoodPrice)
+    {
+        foodInfo.add(new Food(FoodName, FoodPrice));
+    }
     public static ArrayList<Food> getInfo(){
-        ArrayList<Food> foodInfo = new ArrayList<>();
+     //   ArrayList<Food> foodInfo = new ArrayList<>();
 
         //Baked Goods
-        foodInfo.add(new Food("Blueberry Bagel", 2.0));
+        /*foodInfo.add(new Food("Blueberry Bagel", 2.0));
         foodInfo.add(new Food("Chocolate Chip Cookie", 0.85));
         foodInfo.add(new Food("Banana Nut Muffin", 2.0));
         //Wraps
@@ -35,7 +43,7 @@ public class GetFood {
         foodInfo.add(new Food("Large Mango Smoothie", 4.50));
         //Grab & Go
         foodInfo.add(new Food("Original Sun Chips", 1.0));
-
+*/
         return foodInfo;
     }
 }

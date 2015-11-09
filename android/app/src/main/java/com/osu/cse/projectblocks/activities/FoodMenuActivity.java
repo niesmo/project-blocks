@@ -1,19 +1,18 @@
 package com.osu.cse.projectblocks.activities;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.google.gson.Gson;
 import com.osu.cse.projectblocks.R;
 import com.osu.cse.projectblocks.data.DataApi;
+import com.osu.cse.projectblocks.data.GetFood;
 import com.osu.cse.projectblocks.data.OrchestrateDataParser;
-import com.osu.cse.projectblocks.models.Cafeteria;
 import com.osu.cse.projectblocks.models.Food;
 
 import org.json.JSONException;
@@ -46,7 +45,6 @@ public class FoodMenuActivity extends AppCompatActivity {
                 try {
                     List<Food> list;
                     list = foodParser.parseArray(response, Food.class);
-
 
                 } catch (JSONException e) {
                     e.printStackTrace();

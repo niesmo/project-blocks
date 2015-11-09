@@ -76,15 +76,31 @@ public class Result extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+        Intent i;
         switch (item.getItemId()) {
-            case R.id.find_food:
-                return true;
-            case R.id.find_cafe:
-                Intent i = new Intent(Result.this, MapsActivity.class);
+            // home page menu item
+            case R.id.home_menu_item:
+                i = new Intent(Result.this, MainActivity.class);
                 startActivity(i);
                 break;
+
+            // Find food menu item
+            case R.id.find_food:
+                i = new Intent(Result.this, FoodMenuActivity.class);
+                startActivity(i);
+                break;
+
+            // find cafeteria menu item
+            case R.id.find_cafe:
+                i = new Intent(Result.this, MapsActivity.class);
+                startActivity(i);
+                break;
+
+            // preference menu item
             case R.id.setting_preference:
                 return true;
+
+            // history menu item
             case R.id.history:
                 return true;
         }
