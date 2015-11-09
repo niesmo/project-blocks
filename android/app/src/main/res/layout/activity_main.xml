@@ -5,6 +5,17 @@
               android:orientation="vertical"
     tools:context=".MainActivity">
 
+
+    <AutoCompleteTextView
+        android:id="@+id/autoCompleteTextView1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/food_menu_search_query_hint"
+        android:ems="10" >
+        <requestFocus />
+    </AutoCompleteTextView>
+
+
     <ListView
         android:id="@+id/list"
         android:layout_width="fill_parent"
