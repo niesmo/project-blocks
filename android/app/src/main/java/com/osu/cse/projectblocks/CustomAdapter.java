@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.osu.cse.projectblocks.R;
 import com.osu.cse.projectblocks.activities.MainActivity;
 import com.osu.cse.projectblocks.models.Food;
 
@@ -24,17 +25,12 @@ public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
     private Activity activity;
     private ArrayList data;
     private static LayoutInflater inflater=null;
-   // public Resources res;
     Food tempValues=null;
-
-   // int totalmoney=0;
 
 
     public CustomAdapter(Activity a, ArrayList d) {
         activity = a;
         data = d;
-
-
 
         inflater=(LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -145,7 +141,6 @@ public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
 
 
             /****  Call  onItemClick Method inside CustomListViewAndroidExample Class ( See Below )****/
-
             sct.onItemClick(mPosition);
         }
     }

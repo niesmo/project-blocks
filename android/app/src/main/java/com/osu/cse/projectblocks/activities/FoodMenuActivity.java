@@ -47,13 +47,7 @@ public class FoodMenuActivity extends AppCompatActivity {
                     List<Food> list;
                     list = foodParser.parseArray(response, Food.class);
 
-                    String names = "";
-                    for (Iterator<Food> i = list.iterator(); i.hasNext(); ) {
-                        Food f = i.next();
-                        names += f.getName() + "\n";
-                    }
 
-                    mTextView.setText(names);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

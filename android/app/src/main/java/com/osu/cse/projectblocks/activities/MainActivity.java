@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     ListView list;
     CustomAdapter adapter;
     public  MainActivity CustomListView = null;
-    public ArrayList<Food> CustomListViewValuesArr = new ArrayList<Food>();
+    public ArrayList<Food> CustomListViewValuesArr = new ArrayList<>();
     public double totalprice=0;
     //TextView mTextView_price;
     TextView mTextView_money;
