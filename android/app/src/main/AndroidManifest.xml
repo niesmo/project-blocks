@@ -20,7 +20,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+                <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             </intent-filter>
         </activity>
         <activity
@@ -45,7 +45,7 @@
             android:value="" />
 
         <activity
-            android:name=".activities.FoodMenuActivity"
+            android:name=".activities.food.menu.FoodMenuActivity"
             android:label="@string/title_activity_food_menu" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -53,6 +53,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".activities.cafeteria.list.CafeteriaListActivity"
+            android:label="@string/title_activity_cafeteria_list" >
+        </activity>
+
     </application>
 
 </manifest>
