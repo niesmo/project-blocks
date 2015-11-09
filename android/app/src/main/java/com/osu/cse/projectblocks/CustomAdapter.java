@@ -16,6 +16,7 @@ import com.osu.cse.projectblocks.activities.MainActivity;
 import com.osu.cse.projectblocks.models.Food;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by shirly on 11/5/15.
@@ -23,12 +24,12 @@ import java.util.ArrayList;
 public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
 
     private Activity activity;
-    private ArrayList data;
+    private List data;
     private static LayoutInflater inflater=null;
     Food tempValues=null;
 
 
-    public CustomAdapter(Activity a, ArrayList d) {
+    public CustomAdapter(Activity a, List d) {
         activity = a;
         data = d;
 

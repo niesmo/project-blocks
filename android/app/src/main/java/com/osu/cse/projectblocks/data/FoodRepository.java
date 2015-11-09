@@ -3,20 +3,19 @@ package com.osu.cse.projectblocks.data;
 import com.osu.cse.projectblocks.models.Food;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Yiran on 11/5/2015.
  */
-public class GetFood {
+public class FoodRepository {
 
+    private static List<Food> _foodsCached;
 
-
-    private static ArrayList<Food> foodInfo = new ArrayList<>();
-    public void setInfo(String FoodName,double FoodPrice)
-    {
-        foodInfo.add(new Food(FoodName, FoodPrice));
+    public static void cacheFoods(List<Food> foods){
+        _foodsCached = foods;
     }
-    public static ArrayList<Food> getInfo(){
+    public static List<Food> getAllFoods(){
      //   ArrayList<Food> foodInfo = new ArrayList<>();
 
         //Baked Goods
@@ -44,6 +43,6 @@ public class GetFood {
         //Grab & Go
         foodInfo.add(new Food("Original Sun Chips", 1.0));
 */
-        return foodInfo;
+        return _foodsCached;
     }
 }

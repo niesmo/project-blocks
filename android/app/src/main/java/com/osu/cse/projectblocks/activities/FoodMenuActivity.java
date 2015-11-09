@@ -11,19 +11,19 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.osu.cse.projectblocks.R;
 import com.osu.cse.projectblocks.data.DataApi;
-import com.osu.cse.projectblocks.data.GetFood;
+import com.osu.cse.projectblocks.data.FoodRepository;
 import com.osu.cse.projectblocks.data.OrchestrateDataParser;
 import com.osu.cse.projectblocks.models.Food;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Iterator;
 import java.util.List;
 
 
 public class FoodMenuActivity extends AppCompatActivity {
     private DataApi repository;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +45,9 @@ public class FoodMenuActivity extends AppCompatActivity {
                 try {
                     List<Food> list;
                     list = foodParser.parseArray(response, Food.class);
+
+                    // setting the foods for other activities
+                    FoodRepository.cacheFoods(list);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
