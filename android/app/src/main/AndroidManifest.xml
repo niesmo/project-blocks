@@ -53,10 +53,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activities.cafeteria.list.CafeteriaListActivity"
             android:label="@string/title_activity_cafeteria_list" >
         </activity>
+
     </application>
 
 </manifest>
