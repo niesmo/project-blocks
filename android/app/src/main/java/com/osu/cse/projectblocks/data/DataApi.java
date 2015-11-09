@@ -1,14 +1,10 @@
 package com.osu.cse.projectblocks.data;
 
 import android.content.Context;
-import android.provider.ContactsContract;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.osu.cse.projectblocks.activities.FoodMenuActivity;
 
 import org.json.JSONObject;
 

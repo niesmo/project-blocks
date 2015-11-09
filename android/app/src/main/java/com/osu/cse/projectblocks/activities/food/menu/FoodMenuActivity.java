@@ -1,17 +1,23 @@
-package com.osu.cse.projectblocks.activities;
+package com.osu.cse.projectblocks.activities.food.menu;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.osu.cse.projectblocks.R;
+import com.osu.cse.projectblocks.activities.MainActivity;
+import com.osu.cse.projectblocks.activities.MapsActivity;
 import com.osu.cse.projectblocks.data.DataApi;
-import com.osu.cse.projectblocks.data.FoodRepository;
+import com.osu.cse.projectblocks.data.Repository;
 import com.osu.cse.projectblocks.data.OrchestrateDataParser;
 import com.osu.cse.projectblocks.models.Food;
 
@@ -22,7 +28,10 @@ import java.util.List;
 
 
 public class FoodMenuActivity extends AppCompatActivity {
-    private DataApi repository;
+    private static final String TAG = FoodMenuActivity.class.getName();
+    private DataApi db;
+    private FoodMenuAdapter foodMenuAdapter;
+    private ExpandableListView foodMenu;
 
 
     @Override
@@ -30,15 +39,14 @@ public class FoodMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_menu);
 
-        // Setting up the repository (NOTE this a Singleton class)
-        repository = DataApi.getInstance();
+        // Setting up the db (NOTE this a Singleton class)
+        db = DataApi.getInstance();
 
         // setting up the Orchestrate data parser
         final OrchestrateDataParser<Food> foodParser = new OrchestrateDataParser();
 
-        final TextView mTextView = (TextView) findViewById(R.id.response);
 
-        repository.getFoods(this, new Response.Listener<JSONObject>() {
+        db.getFoods(this, new Response.Listener<JSONObject>() {
 
             @Override
             public void onResponse(JSONObject response) {
@@ -47,7 +55,21 @@ public class FoodMenuActivity extends AppCompatActivity {
                     list = foodParser.parseArray(response, Food.class);
 
                     // setting the foods for other activities
-                    FoodRepository.cacheFoods(list);
+                    Repository.cacheFoods(list);
+
+                    // Work with connecting the adapter and showing the items
+                    foodMenu = (ExpandableListView) findViewById(R.id.foods_menu_by_category);
+
+                    foodMenuAdapter = new FoodMenuAdapter(FoodMenuActivity.this);
+
+                    foodMenu.setAdapter(foodMenuAdapter);
+
+                    // setting on click listeners for menu food item
+                    foodMenu.setOnChildClickListener(menuFoodItemClicked);
+
+                    // setting on click listeners for menu food category
+                    foodMenu.setOnGroupClickListener(menuFoodCategoryClicked);
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -57,7 +79,7 @@ public class FoodMenuActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                mTextView.setText(error.toString());
+                error.printStackTrace();
             }
         });
     }
@@ -103,4 +125,25 @@ public class FoodMenuActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    private ExpandableListView.OnChildClickListener menuFoodItemClicked = new ExpandableListView.OnChildClickListener() {
+        @Override
+        public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+            String cat = Repository.getAllCategories().get(groupPosition);
+            Food food = Repository.getAllFoodInCategory(cat).get(childPosition);
+
+            Toast.makeText(FoodMenuActivity.this, food.getName() + " -> " + food.getPrice(), Toast.LENGTH_SHORT).show();
+
+            return false;
+        }
+    };
+
+    private ExpandableListView.OnGroupClickListener menuFoodCategoryClicked = new ExpandableListView.OnGroupClickListener() {
+        @Override
+        public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+//            String cat = Repository.getAllCategories().get(groupPosition);
+//            Toast.makeText(FoodMenuActivity.this, cat , Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    };
 }

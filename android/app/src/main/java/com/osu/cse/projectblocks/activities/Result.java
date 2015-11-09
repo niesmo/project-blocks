@@ -10,7 +10,8 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.osu.cse.projectblocks.R;
-import com.osu.cse.projectblocks.data.FoodRepository;
+import com.osu.cse.projectblocks.activities.food.menu.FoodMenuActivity;
+import com.osu.cse.projectblocks.data.Repository;
 import com.osu.cse.projectblocks.models.Food;
 
 import java.text.DecimalFormat;
@@ -44,7 +45,7 @@ public class Result extends AppCompatActivity {
         if(totalmoney%5==0 || money < 0.85){
             textview.setText("No More You Can Have!");
         }else{
-            allfood = FoodRepository.getAllFoods();
+            allfood = Repository.getAllFoods();
             len = allfood.size();
             combination(0, 0.0, new ArrayList<String>());
             textview.setText("What Else You Can Have!");

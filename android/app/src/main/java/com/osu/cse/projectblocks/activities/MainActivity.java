@@ -14,7 +14,8 @@ import android.widget.Toast;
 
 import com.osu.cse.projectblocks.CustomAdapter;
 import com.osu.cse.projectblocks.R;
-import com.osu.cse.projectblocks.data.FoodRepository;
+import com.osu.cse.projectblocks.activities.food.menu.FoodMenuActivity;
+import com.osu.cse.projectblocks.data.Repository;
 import com.osu.cse.projectblocks.models.Food;
 
 import java.text.DecimalFormat;
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     //TextView mTextView_price;
     TextView mTextView_money;
     TextView mTextView_block;
-    FoodRepository mFoodRepository;
+    Repository mRepository;
     Button mMaximum;
 
     @Override
@@ -114,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     /****** Function to set data in ArrayList *************/
     public void setListData()
     {
-        CustomListViewValuesArr= FoodRepository.getAllFoods();
+        CustomListViewValuesArr= Repository.getAllFoods();
     }
 
 
