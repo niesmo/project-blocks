@@ -9,10 +9,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.osu.cse.projectblocks.R;
-import com.osu.cse.projectblocks.data.GetFood;
+import com.osu.cse.projectblocks.data.FoodRepository;
 import com.osu.cse.projectblocks.models.Food;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Result extends AppCompatActivity {
     //Need to get from another activity
@@ -20,8 +21,8 @@ public class Result extends AppCompatActivity {
     int block;
     int len;
     double money;
-    ArrayList<Food> allfood;
-    ArrayList<String> result = new ArrayList<>();
+    List<Food> allfood;
+    List<String> result = new ArrayList<>();
 
     ListView listview;
     ArrayAdapter<String> adapter;
@@ -35,7 +36,7 @@ public class Result extends AppCompatActivity {
         totalmoney= Double.parseDouble(getIntent().getStringExtra("totalprice"));
         block = (int) totalmoney/5; block++;
         money = (double) block*5 - totalmoney;
-        allfood = GetFood.getInfo();
+        allfood = FoodRepository.getAllFoods();
         len = allfood.size();
         combination(0, 0.0, new ArrayList<String>());
 

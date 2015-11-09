@@ -14,23 +14,24 @@ import android.widget.Toast;
 
 import com.osu.cse.projectblocks.CustomAdapter;
 import com.osu.cse.projectblocks.R;
-import com.osu.cse.projectblocks.data.GetFood;
+import com.osu.cse.projectblocks.data.FoodRepository;
 import com.osu.cse.projectblocks.models.Food;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener{
 
     ListView list;
     CustomAdapter adapter;
     public  MainActivity CustomListView = null;
-    public ArrayList<Food> CustomListViewValuesArr = new ArrayList<Food>();
+    public List<Food> CustomListViewValuesArr = new ArrayList<>();
     public double totalprice=0;
     //TextView mTextView_price;
     TextView mTextView_money;
     TextView mTextView_block;
-    GetFood mGetFood;
+    FoodRepository mFoodRepository;
     Button mMaximum;
 
     @Override
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
 
         /**************** Create Custom Adapter *********/
-        adapter=new CustomAdapter( CustomListView, CustomListViewValuesArr);
+        adapter=new CustomAdapter(CustomListView, CustomListViewValuesArr);
         list.setAdapter(adapter);
 
         mMaximum.setOnClickListener(new View.OnClickListener() {
@@ -113,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     /****** Function to set data in ArrayList *************/
     public void setListData()
     {
-        CustomListViewValuesArr=mGetFood.getInfo();
+        CustomListViewValuesArr= FoodRepository.getAllFoods();
     }
 
 
