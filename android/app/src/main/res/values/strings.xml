@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">ProjectBlocks</string>
 
-    <string name="title">Test Version 2.5 (Assume Spending $7.25)</string>
+    <string name="title">Test Version 3.1 (Assume Spending $7.25)</string>
     <string name="loc">Max Result</string>
     <string name="pre">Nearest Cafe</string>
     <string name="action_settings">Settings</string>
@@ -12,6 +12,9 @@
     <string name="find_cafe">Nearest Cafeteria</string>
     <string name="preference">Preference</string>
     <string name="history">History</string>
+
+    <string name="result">What Else</string>
+    <string name="price">Total Price</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_my_location">CurrentMap</string>

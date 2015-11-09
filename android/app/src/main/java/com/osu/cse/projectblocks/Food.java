@@ -9,6 +9,9 @@ public class Food {
     private String image;
     private String nutrition;
 
+    public Food (){
+    }
+
     public Food (String n, double p, String i, String nu){
         this.name = n;
         this.price = p;
@@ -16,16 +19,32 @@ public class Food {
         this.nutrition = nu;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public void setNutrition(String nutrition) {
+        this.nutrition = nutrition;
+    }
+
     public String getName(){
         return this.name;
     }
-    public double getPrice() {
+    public double getPrice(){
         return this.price;
     }
-    public String getImage() {
+    public String getImage(){
         return this.image;
     }
-    public String getNutrition() {
+    public String getNutrition(){
         return this.nutrition;
     }
 }

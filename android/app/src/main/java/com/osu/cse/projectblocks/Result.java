@@ -5,22 +5,27 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Result extends AppCompatActivity {
     //Need to get from another activity
-    double totalmoney = 7.25;
+    double totalmoney = 6.35;
     int block;
     int len;
     double money;
     ArrayList<Food> allfood;
-    ArrayList<String> result = new ArrayList<>();
+    DecimalFormat df = new DecimalFormat("0.00");
+    ArrayList<HashMap<String, String>> result = new ArrayList<>();
 
+    TextView textview;
     ListView listview;
-    ArrayAdapter<String> adapter;
+    SimpleAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,22 +36,37 @@ public class Result extends AppCompatActivity {
         money = (double) block*5 - totalmoney;
         allfood = GetFood.getInfo();
         len = allfood.size();
-        combination(0, 0.0, new ArrayList<String>());
-
-        listview = (ListView)findViewById(R.id.Result_listView);
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, result);
-        listview.setAdapter(adapter);
+        textview = (TextView)findViewById(R.id.result_text);
+        if(money < 0.85){
+            textview.setText("No More You Can Have!");
+        }else{
+            combination(0, 0.0, new ArrayList<String>());
+            textview.setText("What Else You Can Have!");
+            listview = (ListView)findViewById(R.id.Result_listView);
+            adapter = new SimpleAdapter(this, result, R.layout.result_column, new String[] {"item", "price"}, new int[] {R.id.column_result, R.id.column_price});
+            listview.setAdapter(adapter);
+        }
     }
 
     private void combination(int start, double sum, ArrayList<String> list){
-        if((money-sum) < 1){
+        if((money-sum) < 0.85){
             StringBuffer sb = new StringBuffer();
+            HashMap<String, Integer> map = new HashMap<>();
             for(int i=0; i<list.size(); i++){
-                sb.append("+" + list.get(i));
+                if(map.containsKey(list.get(i))) map.put(list.get(i), map.get(list.get(i))+1);
+                else map.put(list.get(i), 1);
             }
-            sb.append("=$");
-            sb.append(totalmoney+sum);
-            result.add(sb.substring(1).toString());
+            for(int i=0; i<list.size(); i++){
+                if((i!=0) && (list.get(i)==list.get(i-1))) continue;
+                sb.append("\n");
+                sb.append(list.get(i));
+                sb.append(" x ");
+                sb.append(map.get(list.get(i)));
+            }
+            HashMap<String, String> map2 = new HashMap<>();
+            map2.put("item", sb.substring(1).toString());
+            map2.put("price", "$" + df.format(totalmoney + sum));
+            result.add(map2);
             return;
         }
         for(int i=start; i<len; i++){
