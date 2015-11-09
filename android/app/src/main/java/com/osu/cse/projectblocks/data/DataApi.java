@@ -1,14 +1,10 @@
 package com.osu.cse.projectblocks.data;
 
 import android.content.Context;
-import android.provider.ContactsContract;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.osu.cse.projectblocks.activities.FoodMenuActivity;
 
 import org.json.JSONObject;
 
@@ -48,8 +44,19 @@ public class DataApi {
         queue.add(jor);
     }
 
-    public static void getFoods(Context c, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+    public static void getAllFoods(Context c, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
         String resource ="foods?limit=100";
+
+        // create the request
+        OrchestrateJsonObjectRequest jor = new OrchestrateJsonObjectRequest(resource, listener, errorListener);
+
+        // Access the RequestQueue through your singleton class.
+        RequestQueue queue = Volley.newRequestQueue(c);
+        queue.add(jor);
+    }
+
+    public static void getFoodsInCafeteria(Context c, String cafeteriaKey, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener){
+        String resource ="foods?cafeteriaId="+cafeteriaKey+"&limit=100";
 
         // create the request
         OrchestrateJsonObjectRequest jor = new OrchestrateJsonObjectRequest(resource, listener, errorListener);
