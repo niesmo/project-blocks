@@ -2,10 +2,15 @@ package com.osu.cse.projectblocks.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ListView;
@@ -30,28 +35,51 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     public  MainActivity CustomListView = null;
     public List<Food> CustomListViewValuesArr = new ArrayList<>();
     public double totalprice=0;
-    //TextView mTextView_price;
     TextView mTextView_money;
     TextView mTextView_block;
-    Repository mRepository;
     Button mMaximum;
+    private List<String> foodnamelist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        /**instance  */
         CustomListView = this;
-
-
-
-        /******** Take some data in Arraylist ( CustomListViewValuesArr ) ***********/
-        setListData();
-
-        // Resources res =getResources();
         list= (ListView)findViewById( R.id.list );  // List defined in XML ( See Below )
         mTextView_money=(TextView)findViewById(R.id.price);
         mTextView_block=(TextView)findViewById(R.id.block);
         mMaximum=(Button)findViewById(R.id.maximum);
+
+
+
+        //to avoid some httpconnect problems
+        if (android.os.Build.VERSION.SDK_INT > 9)
+        {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+
+        /******** Take some data in Arraylist ( CustomListViewValuesArr ) ***********/
+        setListData();
+
+        /****Create auto complete textview Adapter*****/
+        final AutoCompleteTextView searchactv = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView1);
+        ArrayAdapter<String> searchbaradapter= new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,foodnamelist);
+        searchactv.setAdapter(searchbaradapter);
+
+        //set on click listener in searchactv
+        searchactv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+
+                list.setSelection(foodnamelist.indexOf(searchactv.getText().toString()));
+
+            }
+        });
 
 
         /**************** Create Custom Adapter *********/
@@ -118,6 +146,13 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     public void setListData()
     {
         CustomListViewValuesArr= Repository.getAllFoods();
+        foodnamelist=new ArrayList<>();
+        for(Food temp:CustomListViewValuesArr)
+        {
+            foodnamelist.add(temp.getName());
+            Log.v("FOODNAME",temp.getName());
+        }
+
     }
 
 
@@ -133,6 +168,8 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         Toast.makeText(CustomListView, tempValues.getName() + " FoodPrice:" + tempValues.getPrice(), Toast.LENGTH_LONG).show();
     }
 
+
+    /*****************  This function used to calculate the total money ****************/
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         int pos=list.getPositionForView(buttonView);
@@ -149,13 +186,22 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
             else
                 totalprice -= d.getPrice();
 
-            mTextView_money.setText("$"+df.format(totalprice));
+            mTextView_money.setText("$" + df.format(totalprice));
             if(totalprice%5>0)
                 numblock=(int)totalprice/5+1;
             else
                 numblock=(int)totalprice/5;
 
-            mTextView_block.setText(Integer.toString(numblock));
+            if(numblock<1)
+            {
+                mTextView_block.setText("");
+            }
+            else if(numblock==1) {
+                mTextView_block.setText(Integer.toString(numblock) + "BLOCK");
+            }
+            else {
+                mTextView_block.setText(Integer.toString(numblock) + "BLOCKS");
+            }
 
         }
     }

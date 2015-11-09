@@ -2,6 +2,8 @@ package com.osu.cse.projectblocks;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,11 +13,13 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.osu.cse.projectblocks.R;
 import com.osu.cse.projectblocks.activities.MainActivity;
 import com.osu.cse.projectblocks.models.Food;
 
-import java.util.ArrayList;
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.List;
 
 /**
@@ -104,6 +108,15 @@ public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
 
             holder.foodname.setText(tempValues.getName());
             holder.foodpri.setText("$" + tempValues.getPrice());
+
+            Bitmap bm;
+            bm=getImageBitmap(tempValues.getImageUrl());
+            if(bm!=null)
+            holder.image.setImageBitmap(bm);
+            else
+            holder.image.setImageResource(R.mipmap.ic_launcher);
+
+            //holder.image.setImageURI(Uri.parse(tempValues.getImageUrl()));
            // holder.image.setImageResource(res.getIdentifier("com.androidexample.customlistview:drawable/"+tempValues.getFoodImage(),null,null));
            // holder.checkbox.setChecked(tempValues.isSelected());
             //holder.checkbox.setTag(tempValues);
@@ -144,5 +157,26 @@ public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
             /****  Call  onItemClick Method inside CustomListViewAndroidExample Class ( See Below )****/
             sct.onItemClick(mPosition);
         }
+    }
+
+    private Bitmap getImageBitmap(String url) {
+        Bitmap bm = null;
+        try {
+
+            Log.v("IMAGE URL",url);
+            URL aURL = new URL(url);
+            URLConnection conn = aURL.openConnection();
+            conn.connect();
+            InputStream is = conn.getInputStream();
+            BufferedInputStream bis = new BufferedInputStream(is);
+            bm = BitmapFactory.decodeStream(bis);
+            bis.close();
+            is.close();
+            return bm;
+        } catch (Exception e) {
+            Log.e("IMAGE WRONG", "Error getting bitmap", e);
+            return null;
+        }
+
     }
 }
