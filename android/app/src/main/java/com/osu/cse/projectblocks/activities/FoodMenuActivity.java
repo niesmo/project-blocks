@@ -1,19 +1,18 @@
 package com.osu.cse.projectblocks.activities;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.google.gson.Gson;
 import com.osu.cse.projectblocks.R;
 import com.osu.cse.projectblocks.data.DataApi;
+import com.osu.cse.projectblocks.data.GetFood;
 import com.osu.cse.projectblocks.data.OrchestrateDataParser;
-import com.osu.cse.projectblocks.models.Cafeteria;
 import com.osu.cse.projectblocks.models.Food;
 
 import org.json.JSONException;
@@ -25,6 +24,8 @@ import java.util.List;
 
 public class FoodMenuActivity extends AppCompatActivity {
     private DataApi repository;
+    private GetFood mGetFood;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,7 @@ public class FoodMenuActivity extends AppCompatActivity {
 
         // Setting up the repository (NOTE this a Singleton class)
         repository = DataApi.getInstance();
+        mGetFood=new GetFood();
 
         // setting up the Orchestrate data parser
         final OrchestrateDataParser<Food> foodParser = new OrchestrateDataParser();
@@ -51,6 +53,8 @@ public class FoodMenuActivity extends AppCompatActivity {
                     for (Iterator<Food> i = list.iterator(); i.hasNext(); ) {
                         Food f = i.next();
                         names += f.getName() + "\n";
+                        mGetFood.setInfo(f.getName(),f.getPrice());
+
                     }
 
                     mTextView.setText(names);
