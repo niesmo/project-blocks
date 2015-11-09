@@ -56,9 +56,9 @@ public class Result extends AppCompatActivity {
             return;
         }
         for(int i=start; i<len; i++){
-            if((allfood.get(i).getFoodprice() + sum) <= money){
-                list.add(allfood.get(i).getFoodname());
-                combination(i, allfood.get(i).getFoodprice() + sum, list);
+            if((allfood.get(i).getPrice() + sum) <= money){
+                list.add(allfood.get(i).getName());
+                combination(i, allfood.get(i).getPrice() + sum, list);
                 list.remove(list.size()-1);
             }
         }
@@ -67,7 +67,7 @@ public class Result extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
 
@@ -76,15 +76,31 @@ public class Result extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+        Intent i;
         switch (item.getItemId()) {
-            case R.id.find_food:
-                return true;
-            case R.id.find_cafe:
-                Intent i = new Intent(Result.this, MapsActivity.class);
+            // home page menu item
+            case R.id.home_menu_item:
+                i = new Intent(Result.this, MainActivity.class);
                 startActivity(i);
                 break;
+
+            // Find food menu item
+            case R.id.find_food:
+                i = new Intent(Result.this, FoodMenuActivity.class);
+                startActivity(i);
+                break;
+
+            // find cafeteria menu item
+            case R.id.find_cafe:
+                i = new Intent(Result.this, MapsActivity.class);
+                startActivity(i);
+                break;
+
+            // preference menu item
             case R.id.setting_preference:
                 return true;
+
+            // history menu item
             case R.id.history:
                 return true;
         }

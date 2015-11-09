@@ -2,17 +2,21 @@
     <string name="app_name">ProjectBlocks</string>
 
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+
     <string name="title_activity_custom_list_view_android_example">CustomListViewAndroidExample</string>
     <string name="maximum">MAXIMUM</string>
-    <string name="find_food">find food</string>
-    <string name="find_cafe">find cafe</string>
-    <string name="preference">preference</string>
-    <string name="history">history</string>
+
+    <string name="home_page_menu_title">Home</string>
+    <string name="find_food_menu_title">Find Food</string>
+    <string name="find_cafe_menu_title">Find Cafe</string>
+    <string name="preference_menu_title">Preference</string>
+    <string name="history_menu_title">History</string>
+
     <string name="title_activity_result">More Choice</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_maps2">Map</string>
     <string name="title_activity_main">Start Here!</string>
+    <string name="title_activity_food_menu">Food Menu</string>
 
 
 </resources>

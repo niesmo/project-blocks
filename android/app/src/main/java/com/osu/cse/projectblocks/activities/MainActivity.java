@@ -32,11 +32,14 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     TextView mTextView_block;
     GetFood mGetFood;
     Button mMaximum;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         CustomListView = this;
+
+
 
         /******** Take some data in Arraylist ( CustomListViewValuesArr ) ***********/
         setListData();
@@ -67,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
 
@@ -76,17 +79,32 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+        Intent i;
         switch (item.getItemId()) {
+            // home page menu item
+            case R.id.home_menu_item:
+               return true;
+
+            // Find food menu item
             case R.id.find_food:
-                return true;
-            case R.id.find_cafe:
-                Intent i = new Intent(MainActivity.this, MapsActivity.class);
+                i = new Intent(MainActivity.this, FoodMenuActivity.class);
                 startActivity(i);
                 break;
+
+            // find cafeteria menu item
+            case R.id.find_cafe:
+                i = new Intent(MainActivity.this, MapsActivity.class);
+                startActivity(i);
+                break;
+
+            // preference menu item
             case R.id.setting_preference:
                 return true;
+
+            // history menu item
             case R.id.history:
                 return true;
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -108,8 +126,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
         // SHOW ALERT
 
-        Toast.makeText(CustomListView, "" + tempValues.getFoodname() + " Image:" + tempValues.getFoodimage()
-                + "FoodPrice:" + tempValues.getFoodprice(), Toast.LENGTH_LONG).show();
+        Toast.makeText(CustomListView, tempValues.getName() + " FoodPrice:" + tempValues.getPrice(), Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -124,9 +141,9 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
             d.setIsSelected(isChecked);
             // Toast.makeText(this,"yes", Toast.LENGTH_SHORT).show();
             if(isChecked)
-                totalprice += d.getFoodprice();
+                totalprice += d.getPrice();
             else
-                totalprice -= d.getFoodprice();
+                totalprice -= d.getPrice();
 
             mTextView_money.setText("$"+df.format(totalprice));
             if(totalprice%5>0)
