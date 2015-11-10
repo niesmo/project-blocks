@@ -26,24 +26,41 @@ import com.osu.cse.projectblocks.models.Food;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener{
+public class MainActivity extends AppCompatActivity {
 
     ListView list;
     CustomAdapter adapter;
     public  MainActivity CustomListView = null;
     public List<Food> CustomListViewValuesArr = new ArrayList<>();
-    public double totalprice=0;
+    public double totalprice = 4;
     TextView mTextView_money;
     TextView mTextView_block;
     Button mMaximum;
     private List<String> foodnamelist;
 
+    int numblock = 0;
+    DecimalFormat df = new DecimalFormat("0.00");
+/*
+    //Store the situation of checkbox
+    public Map<Integer,Boolean> mCBFlag = null;
+    //initialize the checkbox situation
+    void init(){
+        for (int i = 0; i < CustomListViewValuesArr.size(); i++) {
+            mCBFlag.put(i, false);
+        }
+    }*/
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //mCBFlag = new HashMap<Integer, Boolean>();
+        //init();
 
         /**instance  */
         CustomListView = this;
@@ -83,8 +100,26 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
 
         /**************** Create Custom Adapter *********/
-        adapter=new CustomAdapter(CustomListView, CustomListViewValuesArr);
+        adapter = new CustomAdapter(CustomListView, CustomListViewValuesArr);
+        totalprice = adapter.getTotalprice();
         list.setAdapter(adapter);
+
+        mTextView_money.setText("$" + df.format(totalprice));
+        if(totalprice%5>0)
+            numblock=(int)totalprice/5+1;
+        else
+            numblock=(int)totalprice/5;
+
+        if(numblock<1)
+        {
+            mTextView_block.setText("");
+        }
+        else if(numblock==1) {
+            mTextView_block.setText(Integer.toString(numblock) + "BLOCK");
+        }
+        else {
+            mTextView_block.setText(Integer.toString(numblock) + "BLOCKS");
+        }
 
         mMaximum.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -170,11 +205,18 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
 
     /*****************  This function used to calculate the total money ****************/
+    /*
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         int pos=list.getPositionForView(buttonView);
         int numblock=0;
         DecimalFormat df = new DecimalFormat("0.00");
+
+        if(isChecked){
+            mCBFlag.put(pos, true);
+        }else{
+            mCBFlag.put(pos, false);
+        }
 
         if(pos!= ListView.INVALID_POSITION)
         {
@@ -204,7 +246,8 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
             }
 
         }
-    }
+
+    }*/
 
 
 

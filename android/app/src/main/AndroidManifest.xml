@@ -17,7 +17,6 @@
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/title_activity_main" >
-
         </activity>
         <activity
             android:name=".activities.Result"
@@ -49,12 +48,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activities.cafeteria.list.CafeteriaListActivity"
             android:label="@string/title_activity_cafeteria_list" >
         </activity>
-
+        <activity
+            android:name=".FindCafeteria"
+            android:label="@string/title_activity_find_cafeteria" >
+        </activity>
     </application>
 
 </manifest>
