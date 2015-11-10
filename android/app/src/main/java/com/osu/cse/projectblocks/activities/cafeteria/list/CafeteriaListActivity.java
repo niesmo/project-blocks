@@ -48,11 +48,10 @@ public class CafeteriaListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cafeteria_list);
 
-        // get all the cafeterias
         // Setting up the db
         db = DataApi.getInstance();
 
-
+        // getting all the cafeterias
         db.getCafeterias(this, this.onCafeteriaDataSuccess, this.onDataFailure);
 
     }
