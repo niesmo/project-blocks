@@ -12,10 +12,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.osu.cse.projectblocks.CustomAdapter;
 import com.osu.cse.projectblocks.R;
@@ -28,13 +26,14 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener{
+public class MainActivity extends AppCompatActivity {
 
     ListView list;
     CustomAdapter adapter;
     public  MainActivity CustomListView = null;
     public List<Food> CustomListViewValuesArr = new ArrayList<>();
     public double totalprice=0;
+    int numblock=0;
     TextView mTextView_money;
     TextView mTextView_block;
     Button mMaximum;
@@ -162,49 +161,42 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
         Food tempValues = ( Food ) CustomListViewValuesArr.get(mPosition);
 
-
-        // SHOW ALERT
-
-        Toast.makeText(CustomListView, tempValues.getName() + " FoodPrice:" + tempValues.getPrice(), Toast.LENGTH_LONG).show();
-    }
-
-
-    /*****************  This function used to calculate the total money ****************/
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        int pos=list.getPositionForView(buttonView);
-        int numblock=0;
         DecimalFormat df = new DecimalFormat("0.00");
 
-        if(pos!= ListView.INVALID_POSITION)
-        {
-            Food d=CustomListViewValuesArr.get(pos);
-            d.setIsSelected(isChecked);
-            // Toast.makeText(this,"yes", Toast.LENGTH_SHORT).show();
-            if(isChecked)
-                totalprice += d.getPrice();
-            else
-                totalprice -= d.getPrice();
-
-            mTextView_money.setText("$" + df.format(totalprice));
-            if(totalprice%5>0)
-                numblock=(int)totalprice/5+1;
-            else
-                numblock=(int)totalprice/5;
-
-            if(numblock<1)
-            {
-                mTextView_block.setText("");
-            }
-            else if(numblock==1) {
-                mTextView_block.setText(Integer.toString(numblock) + "BLOCK");
-            }
-            else {
-                mTextView_block.setText(Integer.toString(numblock) + "BLOCKS");
-            }
-
+        if(tempValues.isSelected()) {
+            tempValues.setIsSelected(false);
+            totalprice -= tempValues.getPrice();
+            Log.v("PRICE",Double.toString(tempValues.getPrice()));
+            Log.v("NAME",tempValues.getName());
         }
+        else
+        {
+            tempValues.setIsSelected(true);
+            totalprice += tempValues.getPrice();
+        }
+
+        mTextView_money.setText("$" + df.format(totalprice));
+        if(totalprice%5>0)
+            numblock=(int)totalprice/5+1;
+        else
+            numblock=(int)totalprice/5;
+
+        if(numblock<1)
+        {
+            mTextView_block.setText("");
+        }
+        else if(numblock==1) {
+            mTextView_block.setText(Integer.toString(numblock) + "BLOCK");
+        }
+        else {
+            mTextView_block.setText(Integer.toString(numblock) + "BLOCKS");
+        }
+        // SHOW ALERT
+
+       // Toast.makeText(CustomListView, tempValues.getName() + " FoodPrice:" + tempValues.getPrice(), Toast.LENGTH_LONG).show();
     }
+
+
 
 
 
