@@ -13,7 +13,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.osu.cse.projectblocks.R;
 import com.osu.cse.projectblocks.activities.MainActivity;
-import com.osu.cse.projectblocks.activities.MapsActivity;
 import com.osu.cse.projectblocks.activities.cafeteria.list.CafeteriaListActivity;
 import com.osu.cse.projectblocks.data.DataApi;
 import com.osu.cse.projectblocks.data.Repository;

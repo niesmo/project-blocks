@@ -206,7 +206,4 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         }
     }
 
-
-
-
 }
