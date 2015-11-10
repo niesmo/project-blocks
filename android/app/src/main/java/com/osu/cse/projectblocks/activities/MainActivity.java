@@ -195,10 +195,4 @@ public class MainActivity extends AppCompatActivity {
 
        // Toast.makeText(CustomListView, tempValues.getName() + " FoodPrice:" + tempValues.getPrice(), Toast.LENGTH_LONG).show();
     }
-
-
-
-
-
-
 }

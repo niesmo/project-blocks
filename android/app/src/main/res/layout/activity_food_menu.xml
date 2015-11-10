@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16px"
-    tools:context="com.osu.cse.projectblocks.activities.food.menu.FoodMenuActivity">
+    tools:context="com.osu.cse.projectblocks.activities.food.menu.FoodMenuActivity"
+    android:focusableInTouchMode="true" >
 
     <EditText
         android:layout_width="wrap_content"

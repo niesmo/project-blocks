@@ -1,14 +1,15 @@
 package com.osu.cse.projectblocks.activities.cafeteria.list;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
@@ -32,92 +33,35 @@ import java.util.List;
 public class CafeteriaListActivity extends AppCompatActivity {
     private static final String TAG = CafeteriaListActivity.class.getName();
     private DataApi db;
-    private Cafeteria nearestCafeteria;
+    private Cafeteria selectedCafeteria;
+    List<Cafeteria> cafeterias;
+
+    // setting up the Orchestrate data parser
+    private final OrchestrateDataParser<Cafeteria> cafeteriaParser = new OrchestrateDataParser();
+    private final OrchestrateDataParser<Food> foodParser = new OrchestrateDataParser();
+
+    // cafeteria menu
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cafeteria_list);
 
-        // get all the cafeterias
         // Setting up the db
         db = DataApi.getInstance();
 
-        // setting up the Orchestrate data parser
-        final OrchestrateDataParser<Cafeteria> cafeteriaParser = new OrchestrateDataParser();
-        final OrchestrateDataParser<Food> foodParser = new OrchestrateDataParser();
-
-        db.getCafeterias(this, new Response.Listener<JSONObject>() {
-
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    List<Cafeteria> cafeterias = cafeteriaParser.parseArray(response, Cafeteria.class);
-
-                    // cache all the cafeterias (These are pretty consistent)
-                    Repository.cacheCafeterias(cafeterias);
-
-                    //find the nearest Cafeteria
-                    setNearestCafeteria(cafeterias);
-
-                    // if we found the nearest cafeteria
-                    if(nearestCafeteria != null){
-                        // get all the foods for that cafeteria and cache them in the Repository
-                        db.getFoodsInCafeteria(CafeteriaListActivity.this, nearestCafeteria.getKey(), new Response.Listener<JSONObject>(){
-
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                List<Food> foods = null;
-                                try {
-                                    foods = foodParser.parseArray(response, Food.class);
-
-                                    Repository.cacheFoods(foods);
-
-                                    // Make the Toast to let the user know that we selected the nearest cafeteria
-                                    Toast.makeText(CafeteriaListActivity.this, nearestCafeteria.getName() + " was selected", Toast.LENGTH_SHORT).show();
-
-                                    // reroute the user to the main activity
-                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                    startActivity(intent);
-
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }, new Response.ErrorListener() {
-
-                            @Override
-                            public void onErrorResponse(VolleyError error2) {
-                                error2.printStackTrace();
-                            }
-                        });
-                    }
-
-                    // if we didnt find it, let the user pick
-                    else{
-                        Toast.makeText(CafeteriaListActivity.this, "We didnt find your location. Please select a cafeteria", Toast.LENGTH_SHORT).show();
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        });
+        // getting all the cafeterias
+        db.getCafeterias(this, this.onCafeteriaDataSuccess, this.onDataFailure);
 
     }
 
     /**
      * This function will find the users location and will set the nearest cafeteria based on that
-     * if it couldnt find the location of the user, it will set the nearestCafeteria to null
+     * if it couldnt find the location of the user, it will set the selectedCafeteria to null
      * @param cafeterias
      */
-    private void setNearestCafeteria(List<Cafeteria> cafeterias) {
+    private void setSelectedCafeteria(List<Cafeteria> cafeterias) {
         LocationManager locationManager = (LocationManager) getSystemService(CafeteriaListActivity.this.LOCATION_SERVICE);
 
         @SuppressWarnings("ResourceType")
@@ -125,7 +69,7 @@ public class CafeteriaListActivity extends AppCompatActivity {
 
         // neither of the location services worked :(
         if (location == null){
-            this.nearestCafeteria = null;
+            this.selectedCafeteria = null;
             return;
         }
 
@@ -139,7 +83,7 @@ public class CafeteriaListActivity extends AppCompatActivity {
             Location.distanceBetween(location.getLatitude(), location.getLongitude(), c.getLatitude(), c.getLongitude(), results);
 
             if(results[0] < minDistance){
-                this.nearestCafeteria = cafeteria;
+                this.selectedCafeteria = cafeteria;
             }
         }
     }
@@ -186,4 +130,109 @@ public class CafeteriaListActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    /**
+     * This is the handler for the event when data for the cafeterias is available
+     */
+    private Response.Listener<JSONObject> onCafeteriaDataSuccess = new Response.Listener<JSONObject>(){
+
+        @Override
+        public void onResponse(JSONObject response) {
+            try {
+                CafeteriaListActivity.this.cafeterias = cafeteriaParser.parseArray(response, Cafeteria.class);
+
+                // cache all the cafeterias (These are pretty consistent)
+                Repository.cacheCafeterias(CafeteriaListActivity.this.cafeterias);
+
+                //find the nearest Cafeteria
+                setSelectedCafeteria(CafeteriaListActivity.this.cafeterias);
+
+                // if we found the nearest cafeteria
+                if(selectedCafeteria != null){
+                    // get all the foods for that cafeteria and cache them in the Repository
+                    db.getFoodsInCafeteria(CafeteriaListActivity.this, selectedCafeteria.getKey(), CafeteriaListActivity.this.onFoodForCafeteriaSuccess , CafeteriaListActivity.this.onDataFailure);
+                }
+
+                // if we didnt find it, let the user pick
+                else{
+                    CafeteriaListActivity.this.populateCafeteriaList();
+                    Toast.makeText(CafeteriaListActivity.this, "We didnt find your location. Please select a cafeteria", Toast.LENGTH_SHORT).show();
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+    /**
+     * This function is called when the app was not able to find the location of the user
+     * In this function the cafeteria list is populated
+     */
+    private void populateCafeteriaList() {
+        // create the adapter
+        CafeteriaListAdapter adapter = new CafeteriaListAdapter(this,0, this.cafeterias);
+
+        // get the list view
+        ListView cafeteriaList = (ListView) this.findViewById(R.id.cafeteria_list);
+
+        cafeteriaList.setOnItemClickListener(this.cafeteriaItemClicked);
+
+        // connect the adapter
+        cafeteriaList.setAdapter(adapter);
+    }
+
+
+    /**
+     * This is the handler for the event when the foods for the selected cafeteria is available
+     */
+    private Response.Listener<JSONObject> onFoodForCafeteriaSuccess = new Response.Listener<JSONObject>() {
+        @Override
+        public void onResponse(JSONObject response) {
+            List<Food> foods = null;
+            try {
+                foods = foodParser.parseArray(response, Food.class);
+
+                Repository.cacheFoods(foods);
+
+                // Make the Toast to let the user know that we selected the nearest cafeteria
+                Toast.makeText(CafeteriaListActivity.this, selectedCafeteria.getName() + " was selected", Toast.LENGTH_SHORT).show();
+
+                // reroute the user to the main activity
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+    /**
+     *
+     */
+    private Response.ErrorListener onDataFailure = new Response.ErrorListener(){
+
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            error.printStackTrace();
+        }
+    };
+
+
+    /**
+     *
+     */
+    private AdapterView.OnItemClickListener cafeteriaItemClicked = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Cafeteria clickedItem = CafeteriaListActivity.this.cafeterias.get(position);
+
+            CafeteriaListActivity.this.selectedCafeteria = clickedItem;
+
+            db.getFoodsInCafeteria(CafeteriaListActivity.this, clickedItem.getKey(), CafeteriaListActivity.this.onFoodForCafeteriaSuccess , CafeteriaListActivity.this.onDataFailure);
+
+
+        }
+    };
 }
