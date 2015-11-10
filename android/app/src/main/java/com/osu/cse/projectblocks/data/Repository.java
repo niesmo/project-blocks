@@ -21,6 +21,19 @@ public class Repository {
     private static List<String> _categoriesCached;
     private static HashMap<String, List<Food>> _foodByCategoryCached;
 
+    public static List<Food> getAllFoods(){
+        return _foodsCached;
+    }
+    public static List<String> getAllCategories(){
+        return _categoriesCached;
+    }
+    public static List<Cafeteria> getAllCafeterias(){
+        return _cafeteriasCached;
+    }
+    public static List<Food> getAllFoodInCategory(String category){
+        return _foodByCategoryCached.get(category);
+    }
+
     public static void cacheFoods(List<Food> foods){
         // instantiate the new map for food by category variable
         _foodByCategoryCached = new HashMap<>();
@@ -52,16 +65,6 @@ public class Repository {
             }
         }
     }
-    public static List<Food> getAllFoods(){
-        return _foodsCached;
-    }
-    public static List<String> getAllCategories(){
-        return _categoriesCached;
-    }
-    public static List<Food> getAllFoodInCategory(String category){
-        return _foodByCategoryCached.get(category);
-    }
-
     public static void cacheCafeterias(List<Cafeteria> cafeterias) {
         _cafeteriasCached = cafeterias;
     }

@@ -149,10 +149,7 @@ public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
 
         @Override
         public void onClick(View arg0) {
-
             MainActivity sct = (MainActivity)activity;
-
-
 
             /****  Call  onItemClick Method inside CustomListViewAndroidExample Class ( See Below )****/
             sct.onItemClick(mPosition);
@@ -162,7 +159,6 @@ public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
     private Bitmap getImageBitmap(String url) {
         Bitmap bm = null;
         try {
-
             Log.v("IMAGE URL",url);
             URL aURL = new URL(url);
             URLConnection conn = aURL.openConnection();
@@ -174,7 +170,7 @@ public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
             is.close();
             return bm;
         } catch (Exception e) {
-            Log.e("IMAGE WRONG", "Error getting bitmap", e);
+            Log.e("IMAGE WRONG", "Error getting bitmap");
             return null;
         }
 
