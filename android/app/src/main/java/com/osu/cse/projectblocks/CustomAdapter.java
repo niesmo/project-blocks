@@ -84,7 +84,7 @@ public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
             holder.foodpri=(TextView)vi.findViewById(R.id.foodpri);
             holder.image=(ImageView)vi.findViewById(R.id.image);
             holder.checkbox=(CheckBox)vi.findViewById(R.id.checkBox);
-            holder.checkbox.setOnCheckedChangeListener((MainActivity)activity);
+
 
             /************  Set holder with LayoutInflater ************/
             vi.setTag( holder );
@@ -102,6 +102,7 @@ public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
             /***** Get each Model object from Arraylist ********/
             tempValues=null;
             tempValues = ( Food ) data.get( position );
+            Log.v("POSITION",Integer.toString(position));
 
             /************  Set Model values in Holder elements ***********/
 
@@ -109,22 +110,15 @@ public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
             holder.foodname.setText(tempValues.getName());
             holder.foodpri.setText("$" + tempValues.getPrice());
 
-            Bitmap bm;
-            bm=getImageBitmap(tempValues.getImageUrl());
-            if(bm!=null)
-            holder.image.setImageBitmap(bm);
-            else
-            holder.image.setImageResource(R.mipmap.ic_launcher);
 
-            //holder.image.setImageURI(Uri.parse(tempValues.getImageUrl()));
-           // holder.image.setImageResource(res.getIdentifier("com.androidexample.customlistview:drawable/"+tempValues.getFoodImage(),null,null));
-           // holder.checkbox.setChecked(tempValues.isSelected());
-            //holder.checkbox.setTag(tempValues);
+            holder.checkbox.setOnClickListener(new OnItemClickListener(position));
+            holder.checkbox.setChecked(tempValues.isSelected());
 
+          
 
 
             /******** Set Item Click Listner for LayoutInflater for each row *******/
-            vi.setOnClickListener(new OnItemClickListener(position));
+           // vi.setOnClickListener(new OnItemClickListener(position));
 
         }
         return vi;

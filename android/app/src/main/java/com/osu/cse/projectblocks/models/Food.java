@@ -15,6 +15,7 @@ public class Food extends OrchestrateObject{
 
     public Food(String key) {
         super(key);
+        isSelected=false;
     }
 
     public Food(String name, double price) {
@@ -23,6 +24,7 @@ public class Food extends OrchestrateObject{
 
         this.name = name;
         this.price = price;
+        isSelected=false;
     }
 
     public String getName() {
