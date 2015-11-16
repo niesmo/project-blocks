@@ -5,14 +5,18 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
+import com.android.volley.toolbox.Volley;
 import com.osu.cse.projectblocks.activities.MainActivity;
 import com.osu.cse.projectblocks.models.Food;
 
@@ -31,14 +35,36 @@ public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
     private List data;
     private static LayoutInflater inflater=null;
     Food tempValues=null;
+    private RequestQueue mRequestQueue;
+    private ImageLoader mImageLoader;
+
 
 
     public CustomAdapter(Activity a, List d) {
         activity = a;
         data = d;
 
-        inflater=(LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mRequestQueue = Volley.newRequestQueue(activity);
+        inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mImageLoader = new ImageLoader(mRequestQueue, new ImageLoader.ImageCache() {
+            private final LruCache<String, Bitmap> mCache = new LruCache<String, Bitmap>(100);
+
+            @Override
+            public Bitmap getBitmap(String url) {
+                return mCache.get(url);
+            }
+
+            @Override
+            public void putBitmap(String url, Bitmap bitmap) {
+                mCache.put(url, bitmap);
+            }
+
+
+        });
     }
+
+
+
 
     public int getCount(){
         if(data.size()<0)
@@ -60,8 +86,11 @@ public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
         public TextView foodname;
         public TextView foodpri;
         //public TextView textWide;
-        public ImageView image;
+        //
+        //public ImageView image;
+        NetworkImageView avatar ;
         public CheckBox checkbox;
+
 
 
     }
@@ -82,7 +111,8 @@ public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
             holder = new ViewHolder();
             holder.foodname = (TextView) vi.findViewById(R.id.foodname);
             holder.foodpri=(TextView)vi.findViewById(R.id.foodpri);
-            holder.image=(ImageView)vi.findViewById(R.id.image);
+            //holder.image=(ImageView)vi.findViewById(R.id.image);
+            holder.avatar=(NetworkImageView)vi.findViewById(R.id.image);
             holder.checkbox=(CheckBox)vi.findViewById(R.id.checkBox);
 
 
@@ -102,13 +132,15 @@ public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
             /***** Get each Model object from Arraylist ********/
             tempValues=null;
             tempValues = ( Food ) data.get( position );
-            Log.v("POSITION",Integer.toString(position));
+            Log.v("POSITION", Integer.toString(position));
 
             /************  Set Model values in Holder elements ***********/
 
 
             holder.foodname.setText(tempValues.getName());
             holder.foodpri.setText("$" + tempValues.getPrice());
+
+            holder.avatar.setImageUrl(tempValues.getImageUrl(),mImageLoader);
 
 
             holder.checkbox.setOnClickListener(new OnItemClickListener(position));
