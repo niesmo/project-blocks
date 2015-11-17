@@ -13,7 +13,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.osu.cse.projectblocks.R;
 import com.osu.cse.projectblocks.activities.MainActivity;
-import com.osu.cse.projectblocks.activities.MapsActivity;
 import com.osu.cse.projectblocks.activities.cafeteria.list.CafeteriaListActivity;
 import com.osu.cse.projectblocks.data.DataApi;
 import com.osu.cse.projectblocks.data.Repository;
@@ -110,12 +109,7 @@ public class FoodMenuActivity extends AppCompatActivity {
             // find cafeteria menu item
             case R.id.find_cafe:
                 i = new Intent(FoodMenuActivity.this, CafeteriaListActivity.class);
-                startActivity(i);
-                break;
-
-            // navigate to the nearest cafeteria menu item
-            case R.id.nearest_cafe:
-                i = new Intent(FoodMenuActivity.this, MapsActivity.class);
+//                i = new Intent(FoodMenuActivity.this, MapsActivity.class);
                 startActivity(i);
                 break;
 
@@ -126,7 +120,6 @@ public class FoodMenuActivity extends AppCompatActivity {
             // history menu item
             case R.id.history:
                 return true;
-
         }
 
         return super.onOptionsItemSelected(item);

@@ -10,7 +10,6 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.osu.cse.projectblocks.R;
-import com.osu.cse.projectblocks.activities.cafeteria.list.CafeteriaListActivity;
 import com.osu.cse.projectblocks.activities.food.menu.FoodMenuActivity;
 import com.osu.cse.projectblocks.data.Repository;
 import com.osu.cse.projectblocks.models.Food;
@@ -114,12 +113,6 @@ public class Result extends AppCompatActivity {
 
             // find cafeteria menu item
             case R.id.find_cafe:
-                i = new Intent(Result.this, CafeteriaListActivity.class);
-                startActivity(i);
-                break;
-
-            // navigate to the nearest cafeteria menu item
-            case R.id.nearest_cafe:
                 i = new Intent(Result.this, MapsActivity.class);
                 startActivity(i);
                 break;
@@ -131,7 +124,6 @@ public class Result extends AppCompatActivity {
             // history menu item
             case R.id.history:
                 return true;
-
         }
 
         return super.onOptionsItemSelected(item);

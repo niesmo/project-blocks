@@ -17,18 +17,13 @@
         app:showAsAction="never"
         android:title="@string/find_cafe_menu_title"/>
     <item
-        android:id="@+id/nearest_cafe"
-        android:orderInCategory="4"
-        app:showAsAction="never"
-        android:title="@string/nearest_cafe_menu_title"/>
-    <item
         android:id="@+id/setting_preference"
-        android:orderInCategory="5"
+        android:orderInCategory="4"
         app:showAsAction="never"
         android:title="@string/preference_menu_title"/>
     <item
         android:id="@+id/history"
-        android:orderInCategory="6"
+        android:orderInCategory="5"
         app:showAsAction="never"
         android:title="@string/history_menu_title"/>
 </menu>

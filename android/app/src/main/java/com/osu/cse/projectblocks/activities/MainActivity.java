@@ -124,12 +124,7 @@ public class MainActivity extends AppCompatActivity {
             // find cafeteria menu item
             case R.id.find_cafe:
                 i = new Intent(MainActivity.this, CafeteriaListActivity.class);
-                startActivity(i);
-                break;
-
-            // navigate to the nearest cafeteria menu item
-            case R.id.nearest_cafe:
-                i = new Intent(MainActivity.this, MapsActivity.class);
+//                i = new Intent(MainActivity.this, MapsActivity.class);
                 startActivity(i);
                 break;
 
