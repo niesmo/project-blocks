@@ -33,12 +33,10 @@ public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
 
     private Activity activity;
     private List data;
-    private static LayoutInflater inflater=null;
+    private static LayoutInflater inflater = null;
     Food tempValues=null;
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
-
-
 
     public CustomAdapter(Activity a, List d) {
         activity = a;
@@ -100,7 +98,6 @@ public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
 
         View vi = convertView;
         ViewHolder holder;
-
         if(convertView==null){
 
             /****** Inflate tabitem.xml file for each row ( Defined below ) *******/
@@ -111,7 +108,6 @@ public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
             holder = new ViewHolder();
             holder.foodname = (TextView) vi.findViewById(R.id.foodname);
             holder.foodpri=(TextView)vi.findViewById(R.id.foodpri);
-            //holder.image=(ImageView)vi.findViewById(R.id.image);
             holder.avatar=(NetworkImageView)vi.findViewById(R.id.image);
             holder.checkbox=(CheckBox)vi.findViewById(R.id.checkBox);
 
@@ -132,6 +128,7 @@ public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
             /***** Get each Model object from Arraylist ********/
             tempValues=null;
             tempValues = ( Food ) data.get( position );
+
             Log.v("POSITION", Integer.toString(position));
 
             /************  Set Model values in Holder elements ***********/
@@ -145,10 +142,6 @@ public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
 
             holder.checkbox.setOnClickListener(new OnItemClickListener(position));
             holder.checkbox.setChecked(tempValues.isSelected());
-
-          
-
-
             /******** Set Item Click Listner for LayoutInflater for each row *******/
            // vi.setOnClickListener(new OnItemClickListener(position));
 
