@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent toresult=new Intent(MainActivity.this, Result.class);
 
                 toresult.putExtra("totalprice",String.valueOf(totalprice));
+                toresult.putExtra("blocknum",String.valueOf(numblock));
                 startActivity(toresult);
             }
         });
@@ -102,14 +103,14 @@ public class MainActivity extends AppCompatActivity {
         mTextView_block.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (flag){
-                    Toast.makeText(MainActivity.this, "UNBLOCK", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "UNLOCK", Toast.LENGTH_SHORT).show();
                     flag = false;
                     showFood = CustomListViewValuesArr;
                     adapter=new CustomAdapter(CustomListView, showFood);
                     list.setAdapter(adapter);
                 }
                 else{
-                    Toast.makeText(MainActivity.this, "BLOCK", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "LOCK", Toast.LENGTH_SHORT).show();
                     flag = true;
                     restmoney = numblock*5-totalprice;
                     showFood = new ArrayList<Food>();

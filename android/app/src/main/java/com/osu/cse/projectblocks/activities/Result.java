@@ -41,7 +41,7 @@ public class Result extends AppCompatActivity {
 
         totalmoney= Double.parseDouble(getIntent().getStringExtra("totalprice"));
         textview = (TextView)findViewById(R.id.result_text);
-        block = (int) totalmoney/5; block++;
+        block = Integer.parseInt(getIntent().getStringExtra("blocknum"));
         money = (double) block*5 - totalmoney;
         if(totalmoney%5==0 || money < 0.85){
             textview.setText("No More You Can Have!");
