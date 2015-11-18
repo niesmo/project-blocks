@@ -20,14 +20,12 @@
             android:name=".activities.cafeteria.list.CafeteriaListActivity"
             android:label="@string/title_activity_cafeteria_list" >
         </activity>
-
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/title_activity_main" >
-
         </activity>
         <activity
-            android:name=".activities.Result"
+            android:name=".activities.ResultActivity"
             android:label="@string/title_activity_result" >
         </activity>
 
@@ -56,7 +54,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name=".activities.preference.PreferenceActivity"
+            android:label="@string/title_activity_preference" >
+        </activity>
     </application>
 
 </manifest>

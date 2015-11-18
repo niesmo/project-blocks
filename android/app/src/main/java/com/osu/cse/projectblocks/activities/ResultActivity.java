@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.osu.cse.projectblocks.R;
 import com.osu.cse.projectblocks.activities.food.menu.FoodMenuActivity;
+import com.osu.cse.projectblocks.activities.preference.PreferenceActivity;
 import com.osu.cse.projectblocks.data.Repository;
 import com.osu.cse.projectblocks.models.Food;
 
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class Result extends AppCompatActivity {
+public class ResultActivity extends AppCompatActivity {
     //Need to get from another activity
     double totalmoney ;
     int block;
@@ -101,25 +102,27 @@ public class Result extends AppCompatActivity {
         switch (item.getItemId()) {
             // home page menu item
             case R.id.home_menu_item:
-                i = new Intent(Result.this, MainActivity.class);
+                i = new Intent(ResultActivity.this, MainActivity.class);
                 startActivity(i);
                 break;
 
             // Find food menu item
             case R.id.find_food:
-                i = new Intent(Result.this, FoodMenuActivity.class);
+                i = new Intent(ResultActivity.this, FoodMenuActivity.class);
                 startActivity(i);
                 break;
 
             // find cafeteria menu item
             case R.id.find_cafe:
-                i = new Intent(Result.this, MapsActivity.class);
+                i = new Intent(ResultActivity.this, MapsActivity.class);
                 startActivity(i);
                 break;
 
             // preference menu item
             case R.id.setting_preference:
-                return true;
+                i = new Intent(ResultActivity.this, PreferenceActivity.class);
+                startActivity(i);
+                break;
 
             // history menu item
             case R.id.history:

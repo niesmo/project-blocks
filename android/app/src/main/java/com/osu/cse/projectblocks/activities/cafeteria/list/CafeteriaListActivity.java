@@ -17,6 +17,7 @@ import com.android.volley.VolleyError;
 import com.osu.cse.projectblocks.R;
 import com.osu.cse.projectblocks.activities.MainActivity;
 import com.osu.cse.projectblocks.activities.food.menu.FoodMenuActivity;
+import com.osu.cse.projectblocks.activities.preference.PreferenceActivity;
 import com.osu.cse.projectblocks.data.DataApi;
 import com.osu.cse.projectblocks.data.OrchestrateDataParser;
 import com.osu.cse.projectblocks.data.Repository;
@@ -121,7 +122,9 @@ public class CafeteriaListActivity extends AppCompatActivity {
 
             // preference menu item
             case R.id.setting_preference:
-                return true;
+                i = new Intent(CafeteriaListActivity.this, PreferenceActivity.class);
+                startActivity(i);
+                break;
 
             // history menu item
             case R.id.history:

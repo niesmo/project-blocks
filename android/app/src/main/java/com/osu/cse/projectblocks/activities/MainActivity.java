@@ -19,6 +19,7 @@ import com.osu.cse.projectblocks.CustomAdapter;
 import com.osu.cse.projectblocks.R;
 import com.osu.cse.projectblocks.activities.cafeteria.list.CafeteriaListActivity;
 import com.osu.cse.projectblocks.activities.food.menu.FoodMenuActivity;
+import com.osu.cse.projectblocks.activities.preference.PreferenceActivity;
 import com.osu.cse.projectblocks.data.Repository;
 import com.osu.cse.projectblocks.models.Food;
 
@@ -88,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         mMaximum.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
-                Intent toresult=new Intent(MainActivity.this, Result.class);
+                Intent toresult=new Intent(MainActivity.this, ResultActivity.class);
 
                 toresult.putExtra("totalprice",String.valueOf(totalprice));
                 startActivity(toresult);
@@ -124,13 +125,14 @@ public class MainActivity extends AppCompatActivity {
             // find cafeteria menu item
             case R.id.find_cafe:
                 i = new Intent(MainActivity.this, CafeteriaListActivity.class);
-//                i = new Intent(MainActivity.this, MapsActivity.class);
                 startActivity(i);
                 break;
 
             // preference menu item
             case R.id.setting_preference:
-                return true;
+                i = new Intent(MainActivity.this, PreferenceActivity.class);
+                startActivity(i);
+                break;
 
             // history menu item
             case R.id.history:
