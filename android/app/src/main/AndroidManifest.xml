@@ -19,13 +19,18 @@
         <activity
             android:name=".activities.cafeteria.list.CafeteriaListActivity"
             android:label="@string/title_activity_cafeteria_list" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/title_activity_main" >
-
         </activity>
+
         <activity
             android:name=".activities.Result"
             android:label="@string/title_activity_result" >
@@ -43,18 +48,9 @@
             android:label="@string/title_activity_maps" >
         </activity>
 
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="" />
-
         <activity
             android:name=".activities.food.menu.FoodMenuActivity"
             android:label="@string/title_activity_food_menu" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
     </application>
