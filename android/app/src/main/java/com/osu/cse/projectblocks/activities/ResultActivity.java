@@ -10,6 +10,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.osu.cse.projectblocks.R;
+import com.osu.cse.projectblocks.activities.cafeteria.list.CafeteriaListActivity;
 import com.osu.cse.projectblocks.activities.food.menu.FoodMenuActivity;
 import com.osu.cse.projectblocks.activities.preference.PreferenceActivity;
 import com.osu.cse.projectblocks.data.Repository;
@@ -41,7 +42,7 @@ public class ResultActivity extends AppCompatActivity {
 
         totalmoney= Double.parseDouble(getIntent().getStringExtra("totalprice"));
         textview = (TextView)findViewById(R.id.result_text);
-        block = (int) totalmoney/5; block++;
+        block = Integer.parseInt(getIntent().getStringExtra("blocknum"));
         money = (double) block*5 - totalmoney;
         if(totalmoney%5==0 || money < 0.85){
             textview.setText("No More You Can Have!");
@@ -114,6 +115,12 @@ public class ResultActivity extends AppCompatActivity {
 
             // find cafeteria menu item
             case R.id.find_cafe:
+                i = new Intent(ResultActivity.this, CafeteriaListActivity.class);
+                startActivity(i);
+                break;
+
+            // navigate to the nearest cafeteria menu item
+            case R.id.nearest_cafe:
                 i = new Intent(ResultActivity.this, MapsActivity.class);
                 startActivity(i);
                 break;
@@ -127,6 +134,7 @@ public class ResultActivity extends AppCompatActivity {
             // history menu item
             case R.id.history:
                 return true;
+
         }
 
         return super.onOptionsItemSelected(item);

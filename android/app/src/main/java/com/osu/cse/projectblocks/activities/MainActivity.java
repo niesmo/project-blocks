@@ -14,6 +14,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.osu.cse.projectblocks.CustomAdapter;
 import com.osu.cse.projectblocks.R;
@@ -21,10 +22,12 @@ import com.osu.cse.projectblocks.activities.cafeteria.list.CafeteriaListActivity
 import com.osu.cse.projectblocks.activities.food.menu.FoodMenuActivity;
 import com.osu.cse.projectblocks.activities.preference.PreferenceActivity;
 import com.osu.cse.projectblocks.data.Repository;
+import com.osu.cse.projectblocks.models.Cafeteria;
 import com.osu.cse.projectblocks.models.Food;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -39,6 +42,10 @@ public class MainActivity extends AppCompatActivity {
     TextView mTextView_block;
     Button mMaximum;
     private List<String> foodnamelist;
+    private boolean flag = false;
+    private double restmoney = 0;
+    private List<Food> selectedFood = new ArrayList<>();
+    private List<Food> showFood = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +58,6 @@ public class MainActivity extends AppCompatActivity {
         mTextView_money=(TextView)findViewById(R.id.price);
         mTextView_block=(TextView)findViewById(R.id.block);
         mMaximum=(Button)findViewById(R.id.maximum);
-
-
 
         //to avoid some httpconnect problems
         if (android.os.Build.VERSION.SDK_INT > 9)
@@ -75,15 +80,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-
-                list.setSelection(foodnamelist.indexOf(searchactv.getText().toString()));
-
+            list.setSelection(foodnamelist.indexOf(searchactv.getText().toString()));
             }
         });
 
 
         /**************** Create Custom Adapter *********/
-        adapter=new CustomAdapter(CustomListView, CustomListViewValuesArr);
+        showFood = CustomListViewValuesArr;
+        adapter=new CustomAdapter(CustomListView, showFood);
         list.setAdapter(adapter);
 
         mMaximum.setOnClickListener(new View.OnClickListener() {
@@ -92,7 +96,35 @@ public class MainActivity extends AppCompatActivity {
                 Intent toresult=new Intent(MainActivity.this, ResultActivity.class);
 
                 toresult.putExtra("totalprice",String.valueOf(totalprice));
+                toresult.putExtra("blocknum",String.valueOf(numblock));
                 startActivity(toresult);
+            }
+        });
+
+        mTextView_block.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (flag){
+                    Toast.makeText(MainActivity.this, "UNLOCK", Toast.LENGTH_SHORT).show();
+                    flag = false;
+                    showFood = CustomListViewValuesArr;
+                    adapter=new CustomAdapter(CustomListView, showFood);
+                    list.setAdapter(adapter);
+                }
+                else{
+                    Toast.makeText(MainActivity.this, "LOCK", Toast.LENGTH_SHORT).show();
+                    flag = true;
+                    restmoney = numblock*5-totalprice;
+                    showFood = new ArrayList<Food>();
+                    for(int i=0; i<selectedFood.size(); i++){
+                        showFood.add(selectedFood.get(i));
+                    }
+                    for(int i=0; i<CustomListViewValuesArr.size(); i++){
+                        Food temp = CustomListViewValuesArr.get(i);
+                        if ((temp.getPrice()<restmoney) && !showFood.contains(temp)) showFood.add(temp);
+                    }
+                    adapter=new CustomAdapter(CustomListView, showFood);
+                    list.setAdapter(adapter);
+                }
             }
         });
 
@@ -125,6 +157,12 @@ public class MainActivity extends AppCompatActivity {
             // find cafeteria menu item
             case R.id.find_cafe:
                 i = new Intent(MainActivity.this, CafeteriaListActivity.class);
+                startActivity(i);
+                break;
+
+            // navigate to the nearest cafeteria menu item
+            case R.id.nearest_cafe:
+                i = new Intent(MainActivity.this, MapsActivity.class);
                 startActivity(i);
                 break;
 
@@ -161,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
     public void onItemClick(int mPosition)
     {
 
-        Food tempValues = ( Food ) CustomListViewValuesArr.get(mPosition);
+        Food tempValues = ( Food ) showFood.get(mPosition);
 
         DecimalFormat df = new DecimalFormat("0.00");
 
@@ -170,29 +208,62 @@ public class MainActivity extends AppCompatActivity {
             totalprice -= tempValues.getPrice();
             Log.v("PRICE",Double.toString(tempValues.getPrice()));
             Log.v("NAME",tempValues.getName());
+            selectedFood.remove(tempValues);
+            if(flag){
+                restmoney = numblock*5-totalprice;
+                showFood = new ArrayList<Food>();
+                for(int i=0; i<selectedFood.size(); i++){
+                    showFood.add(selectedFood.get(i));
+                }
+                for(int i=0; i<CustomListViewValuesArr.size(); i++){
+                    Food temp = CustomListViewValuesArr.get(i);
+                    if ((temp.getPrice()<restmoney) && !showFood.contains(temp)) showFood.add(temp);
+                }
+                adapter=new CustomAdapter(CustomListView, showFood);
+                list.setAdapter(adapter);
+            }
         }
         else
         {
+            selectedFood.add(tempValues);
             tempValues.setIsSelected(true);
             totalprice += tempValues.getPrice();
+            if(flag){
+                restmoney = numblock*5-totalprice;
+                showFood = new ArrayList<Food>();
+                for(int i=0; i<selectedFood.size(); i++){
+                    showFood.add(selectedFood.get(i));
+                }
+                for(int i=0; i<CustomListViewValuesArr.size(); i++){
+                    Food temp = CustomListViewValuesArr.get(i);
+                    if ((temp.getPrice()<restmoney) && !showFood.contains(temp)) showFood.add(temp);
+                }
+                adapter=new CustomAdapter(CustomListView, showFood);
+                list.setAdapter(adapter);
+            }
         }
 
         mTextView_money.setText("$" + df.format(totalprice));
-        if(totalprice%5>0)
-            numblock=(int)totalprice/5+1;
-        else
-            numblock=(int)totalprice/5;
+        if(!flag){
+            if(totalprice%5>0)
+                numblock=(int)totalprice/5+1;
+            else
+                numblock=(int)totalprice/5;
 
-        if(numblock<1)
-        {
-            mTextView_block.setText("");
-        }
-        else if(numblock==1) {
-            mTextView_block.setText(Integer.toString(numblock) + "BLOCK");
-        }
-        else {
+            if(numblock<1)
+            {
+                mTextView_block.setText("");
+            }
+            else if(numblock==1) {
+                mTextView_block.setText(Integer.toString(numblock) + "BLOCK");
+            }
+            else {
+                mTextView_block.setText(Integer.toString(numblock) + "BLOCKS");
+            }
+        }else{
             mTextView_block.setText(Integer.toString(numblock) + "BLOCKS");
         }
+
         // SHOW ALERT
 
        // Toast.makeText(CustomListView, tempValues.getName() + " FoodPrice:" + tempValues.getPrice(), Toast.LENGTH_LONG).show();

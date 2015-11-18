@@ -16,6 +16,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.osu.cse.projectblocks.R;
 import com.osu.cse.projectblocks.activities.MainActivity;
+import com.osu.cse.projectblocks.activities.MapsActivity;
 import com.osu.cse.projectblocks.activities.food.menu.FoodMenuActivity;
 import com.osu.cse.projectblocks.activities.preference.PreferenceActivity;
 import com.osu.cse.projectblocks.data.DataApi;
@@ -67,6 +68,9 @@ public class CafeteriaListActivity extends AppCompatActivity {
 
         @SuppressWarnings("ResourceType")
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        if (location == null) {
+            location = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
+        }
 
         // neither of the location services worked :(
         if (location == null){
@@ -85,6 +89,7 @@ public class CafeteriaListActivity extends AppCompatActivity {
 
             if(results[0] < minDistance){
                 this.selectedCafeteria = cafeteria;
+                minDistance = results[0];
             }
         }
     }
@@ -113,12 +118,17 @@ public class CafeteriaListActivity extends AppCompatActivity {
             case R.id.find_food:
                 i = new Intent(CafeteriaListActivity.this, FoodMenuActivity.class);
                 startActivity(i);
-                return true;
+                break;
 
             // find cafeteria menu item
             case R.id.find_cafe:
                 return true;
 
+            // navigate to the nearest cafeteria menu item
+            case R.id.nearest_cafe:
+                i = new Intent(CafeteriaListActivity.this, MapsActivity.class);
+                startActivity(i);
+                break;
 
             // preference menu item
             case R.id.setting_preference:
@@ -129,6 +139,7 @@ public class CafeteriaListActivity extends AppCompatActivity {
             // history menu item
             case R.id.history:
                 return true;
+
         }
 
         return super.onOptionsItemSelected(item);
