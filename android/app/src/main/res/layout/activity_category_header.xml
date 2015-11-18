@@ -5,12 +5,12 @@
     android:padding="@dimen/activity_horizontal_margin"
     tools:context="com.osu.cse.projectblocks.activities.food.menu.CategoryHeaderActivity">
 
-    <TextView
-        android:id="@+id/category_header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="35sp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textStyle="bold" />
+    < TextView
+    android:id="@+id/category_header"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingLeft="35sp"
+    android:textAppearance="?android:attr/textAppearanceMedium"
+    android:textStyle="bold" />
 
 </LinearLayout>

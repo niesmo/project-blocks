@@ -5,7 +5,6 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,7 +30,8 @@ import org.json.JSONObject;
 import java.util.Iterator;
 import java.util.List;
 
-public class CafeteriaListActivity extends AppCompatActivity {
+
+public class CafeteriaList extends AppCompatActivity {
     private static final String TAG = CafeteriaListActivity.class.getName();
     private DataApi db;
     private Cafeteria selectedCafeteria;
@@ -55,44 +55,9 @@ public class CafeteriaListActivity extends AppCompatActivity {
         // getting all the cafeterias
         db.getCafeterias(this, this.onCafeteriaDataSuccess, this.onDataFailure);
 
-    }
-
-    /**
-     * This function will find the users location and will set the nearest cafeteria based on that
-     * if it couldnt find the location of the user, it will set the selectedCafeteria to null
-     * @param cafeterias
-     */
-    private void setSelectedCafeteria(List<Cafeteria> cafeterias) {
-        LocationManager locationManager = (LocationManager) getSystemService(CafeteriaListActivity.this.LOCATION_SERVICE);
-
-        @SuppressWarnings("ResourceType")
-        //Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                Location location = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
-        //locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
-        if (location == null) {
-            location = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
-        }
-        // neither of the location services worked :(
-        if (location == null){
-            this.selectedCafeteria = null;
-            return;
-        }
-
-        float minDistance = (float) Integer.MAX_VALUE;
+}
 
 
-        for (Iterator<Cafeteria> i = cafeterias.iterator(); i.hasNext(); ) {
-            Cafeteria cafeteria = i.next();
-            Coordinates c = cafeteria.getLocation().getCoordinates();
-            float[] results = new float[10];
-            Location.distanceBetween(location.getLatitude(), location.getLongitude(), c.getLatitude(), c.getLongitude(), results);
-
-            if(results[0] < minDistance){
-                this.selectedCafeteria = cafeteria;
-                minDistance = results[0];
-            }
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -110,13 +75,13 @@ public class CafeteriaListActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             // home page menu item
             case R.id.home_menu_item:
-                i = new Intent(CafeteriaListActivity.this, MainActivity.class);
+                i = new Intent(CafeteriaList.this, MainActivity.class);
                 startActivity(i);
                 break;
 
             // Find food menu item
             case R.id.find_food:
-                i = new Intent(CafeteriaListActivity.this, FoodMenuActivity.class);
+                i = new Intent(CafeteriaList.this, FoodMenuActivity.class);
                 startActivity(i);
                 return true;
 
@@ -127,10 +92,6 @@ public class CafeteriaListActivity extends AppCompatActivity {
 
             // preference menu item
             case R.id.setting_preference:
-                return true;
-
-            // history menu item
-            case R.id.history:
                 return true;
         }
 
@@ -145,25 +106,28 @@ public class CafeteriaListActivity extends AppCompatActivity {
         @Override
         public void onResponse(JSONObject response) {
             try {
-                CafeteriaListActivity.this.cafeterias = cafeteriaParser.parseArray(response, Cafeteria.class);
+                CafeteriaList.this.cafeterias = cafeteriaParser.parseArray(response, Cafeteria.class);
 
                 // cache all the cafeterias (These are pretty consistent)
-                Repository.cacheCafeterias(CafeteriaListActivity.this.cafeterias);
+                Repository.cacheCafeterias(CafeteriaList.this.cafeterias);
 
-                //find the nearest Cafeteria
-                setSelectedCafeteria(CafeteriaListActivity.this.cafeterias);
+                //find the location
+                LocationManager locationManager = (LocationManager) getSystemService(CafeteriaList.this.LOCATION_SERVICE);
 
-                // if we found the nearest cafeteria
-                if(selectedCafeteria != null){
-                    // get all the foods for that cafeteria and cache them in the Repository
-                    db.getFoodsInCafeteria(CafeteriaListActivity.this, selectedCafeteria.getKey(), CafeteriaListActivity.this.onFoodForCafeteriaSuccess , CafeteriaListActivity.this.onDataFailure);
+                @SuppressWarnings("ResourceType")
+                //Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                        Location location = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
+                //locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
+                if (location == null) {
+                    location = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
                 }
 
-                // if we didnt find it, let the user pick
-                else{
-                    CafeteriaListActivity.this.populateCafeteriaList();
-                    Toast.makeText(CafeteriaListActivity.this, "We didnt find your location. Please select a cafeteria", Toast.LENGTH_SHORT).show();
-                }
+
+
+                // show the cafeterialist;
+
+                CafeteriaList.this.populateCafeteriaList();
+
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -202,7 +166,7 @@ public class CafeteriaListActivity extends AppCompatActivity {
                 Repository.cacheFoods(foods);
 
                 // Make the Toast to let the user know that we selected the nearest cafeteria
-                Toast.makeText(CafeteriaListActivity.this, selectedCafeteria.getName() + " was selected", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CafeteriaList.this, selectedCafeteria.getName() + " was selected", Toast.LENGTH_SHORT).show();
 
                 // reroute the user to the main activity
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -232,11 +196,11 @@ public class CafeteriaListActivity extends AppCompatActivity {
     private AdapterView.OnItemClickListener cafeteriaItemClicked = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Cafeteria clickedItem = CafeteriaListActivity.this.cafeterias.get(position);
+            Cafeteria clickedItem = CafeteriaList.this.cafeterias.get(position);
 
-            CafeteriaListActivity.this.selectedCafeteria = clickedItem;
+            CafeteriaList.this.selectedCafeteria = clickedItem;
 
-            db.getFoodsInCafeteria(CafeteriaListActivity.this, clickedItem.getKey(), CafeteriaListActivity.this.onFoodForCafeteriaSuccess , CafeteriaListActivity.this.onDataFailure);
+            db.getFoodsInCafeteria(CafeteriaList.this, clickedItem.getKey(), CafeteriaList.this.onFoodForCafeteriaSuccess , CafeteriaList.this.onDataFailure);
 
 
         }
