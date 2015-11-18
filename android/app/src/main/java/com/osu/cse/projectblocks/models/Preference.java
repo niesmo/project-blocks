@@ -60,6 +60,21 @@ public class Preference {
 
     @Override
     public String toString() {
-        return subject;
+        String str = subject;
+
+        // adding the emoji based on the type
+        switch (type){
+            case "Allergy":
+                str += "\t\t \ud83d\ude1e";
+                break;
+            case "Dislike":
+                str += "\t\t\ud83d\ude28";
+                break;
+            case "Like":
+                str += "\t\t\ud83d\ude0a";
+                break;
+        }
+
+        return str;
     }
 }

@@ -24,6 +24,7 @@
     <string name="title_activity_cafeteria_list">List Of Cafeterias</string>
     <string name="title_activity_preference">PreferenceActivity</string>
     <string name="hello">Hello World :)</string>
+    <string name="new_preference_hint">Food</string>
 
 
 </resources>

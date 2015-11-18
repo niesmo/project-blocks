@@ -1,13 +1,18 @@
 package com.osu.cse.projectblocks.activities.preference;
 
 import android.app.ListActivity;
+import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.osu.cse.projectblocks.R;
 import com.osu.cse.projectblocks.activities.MainActivity;
@@ -16,7 +21,6 @@ import com.osu.cse.projectblocks.activities.food.menu.FoodMenuActivity;
 import com.osu.cse.projectblocks.models.Preference;
 
 import java.util.List;
-import java.util.Random;
 
 public class PreferenceActivity extends ListActivity {
     private PreferenceDataSource dataSource;
@@ -26,16 +30,19 @@ public class PreferenceActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preference);
 
+        // set the values for the drop down
+        Spinner dropdown = (Spinner)findViewById(R.id.preferenceType);
+        String[] items = new String[]{"Allergy", "Dislike", "Like"};
+        ArrayAdapter<String> dropDownAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+        dropdown.setAdapter(dropDownAdapter);
+
         // initialize the data source for preferences
         dataSource = new PreferenceDataSource(this);
         dataSource.open();
 
         List<Preference> preferenceList = dataSource.getAllPreferences();
 
-        // use the SimpleCursorAdapter to show the
-        // elements in a ListView
-        ArrayAdapter<Preference> adapter = new ArrayAdapter<Preference>(this,
-                android.R.layout.simple_list_item_1, preferenceList);
+        ArrayAdapter<Preference> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, preferenceList);
         setListAdapter(adapter);
 
     }
@@ -44,16 +51,47 @@ public class PreferenceActivity extends ListActivity {
         @SuppressWarnings("unchecked")
         ArrayAdapter<Preference> adapter = (ArrayAdapter<Preference>) getListAdapter();
 
-        // Mock preference
-        Preference p = new Preference("Peanuts", "Alergy", true);
 
         switch (view.getId()) {
-            case R.id.addPreference:
-                int nextInt = new Random().nextInt(3);
+            case R.id.addPreferenceButton:
+                // get the info from the form
+                EditText et = (EditText)findViewById(R.id.preferenceSubject);
+                String pSubject = et.getText().toString();
+
+                Spinner s = (Spinner)findViewById(R.id.preferenceType);
+                String pType = s.getSelectedItem().toString();
+
+                // validating the preference
+                if(pSubject.trim().equals("") || pType.trim().equals("")){
+                    // close the keyboard
+                    View v = this.getCurrentFocus();
+                    if (v != null) {
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    }
+
+                    // make a toast with the error
+                    Toast.makeText(getApplicationContext(), "Food is required", Toast.LENGTH_SHORT).show();
+                    break;
+                }
+
+                // create the preference
+                Preference p = new Preference(pSubject, pType, true);
 
                 // save the new Preference to the database
                 p = dataSource.createPreference(p);
                 adapter.add(p);
+
+                // clear the form
+                et.setText("");
+
+                // close the keyboard
+                View v = this.getCurrentFocus();
+                if (v != null) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+
                 break;
         }
         adapter.notifyDataSetChanged();
@@ -73,8 +111,8 @@ public class PreferenceActivity extends ListActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main_menu, menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
         return true;
     }
 
