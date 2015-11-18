@@ -29,8 +29,8 @@
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/title_activity_main" >
-
         </activity>
+
         <activity
             android:name=".activities.Result"
             android:label="@string/title_activity_result" >

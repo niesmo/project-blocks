@@ -24,8 +24,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private Cafeteria index;
     private List<Cafeteria> allcafe;
-    //private String [] cafename = {"12th Avenue Bread Company", "Berry Café", "CFAES Cafe", "The Caffeine Element", "The Campus Grind - McPherson", "Crane Cafe", "The Campus Grind - Drinko", "Terra Byte Cafe", "KSA cafe", "Connecting Grounds", "Curl Market", "Courtside Cafe & Courtside Cafe/Juice2", "Marketplace C-Store", "EspressOH & Union Market", "Oxley's", "The PAD", "Thyme & Change"};
-    //private double [][] position = {{39.996728,-83.012867}, {39.999525,-83.014812}, {40.005661,-83.027204}, {39.994994,-83.017049}, {40.002693,-83.012330}, {39.998659,-83.010179}, {39.996474,-83.008291}, {40.001876,-83.013276}, {40.004290,-83.017074}, {40.004234,-83.014448}, {40.004545,-83.011000}, {40.000334,-83.018875}, {39.994433,-83.014077}, {39.997925, -83.008586}, {40.003083, -83.017134}, {39.997925, -83.008586}, {40.007337, -83.018192}, {40.000980, -83.015327}};
 
     //private static final String TAG = MapsActivity.class.getName();
     @Override

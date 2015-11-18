@@ -67,6 +67,9 @@ public class CafeteriaListActivity extends AppCompatActivity {
 
         @SuppressWarnings("ResourceType")
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        if (location == null) {
+            location = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
+        }
 
         // neither of the location services worked :(
         if (location == null){
@@ -85,6 +88,7 @@ public class CafeteriaListActivity extends AppCompatActivity {
 
             if(results[0] < minDistance){
                 this.selectedCafeteria = cafeteria;
+                minDistance = results[0];
             }
         }
     }
