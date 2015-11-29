@@ -22,12 +22,10 @@ import com.osu.cse.projectblocks.activities.cafeteria.list.CafeteriaListActivity
 import com.osu.cse.projectblocks.activities.food.menu.FoodMenuActivity;
 import com.osu.cse.projectblocks.activities.preference.PreferenceActivity;
 import com.osu.cse.projectblocks.data.Repository;
-import com.osu.cse.projectblocks.models.Cafeteria;
 import com.osu.cse.projectblocks.models.Food;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -105,6 +103,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (flag){
                     Toast.makeText(MainActivity.this, "UNLOCK", Toast.LENGTH_SHORT).show();
+                    if(totalprice > 0){
+                        numblock = (int)totalprice / 5 + 1;
+                        mTextView_block.setText(Integer.toString(numblock) + "BLOCKS");
+                    }
+                    else{
+                        numblock = 0;
+                        mTextView_block.setText("");
+                    }
                     flag = false;
                     showFood = CustomListViewValuesArr;
                     adapter=new CustomAdapter(CustomListView, showFood);

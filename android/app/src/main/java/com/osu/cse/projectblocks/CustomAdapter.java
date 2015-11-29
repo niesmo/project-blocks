@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
-import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +15,10 @@ import android.widget.TextView;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
-import com.android.volley.toolbox.Volley;
 import com.osu.cse.projectblocks.activities.MainActivity;
 import com.osu.cse.projectblocks.models.Food;
+import com.osu.cse.projectblocks.models.MyLruBitmapCache;
+import com.osu.cse.projectblocks.models.MySingleton;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
@@ -42,10 +42,13 @@ public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
         activity = a;
         data = d;
 
-        mRequestQueue = Volley.newRequestQueue(activity);
+       // mRequestQueue = Volley.newRequestQueue(activity);
+        mRequestQueue = MySingleton.getInstance(activity).getRequestQueue();
         inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mImageLoader = new ImageLoader(mRequestQueue, new ImageLoader.ImageCache() {
+        ImageLoader.ImageCache imageCache = new MyLruBitmapCache();
+      /*  mImageLoader = new ImageLoader(mRequestQueue, new ImageLoader.ImageCache() {
             private final LruCache<String, Bitmap> mCache = new LruCache<String, Bitmap>(100);
+
 
             @Override
             public Bitmap getBitmap(String url) {
@@ -58,7 +61,8 @@ public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
             }
 
 
-        });
+        });*/
+        mImageLoader =new ImageLoader(mRequestQueue,imageCache);
     }
 
 
