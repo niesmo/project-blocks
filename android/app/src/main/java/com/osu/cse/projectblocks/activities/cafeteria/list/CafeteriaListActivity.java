@@ -91,6 +91,40 @@ public class CafeteriaListActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+        if(isConnected) {
+            // Setting up the db
+            db = DataApi.getInstance();
+
+            // getting all the cafeterias
+            db.getCafeterias(this, this.onCafeteriaDataSuccess, this.onDataFailure);
+        }
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+        if(isConnected) {
+            // Setting up the db
+            db = DataApi.getInstance();
+
+            // getting all the cafeterias
+            db.getCafeterias(this, this.onCafeteriaDataSuccess, this.onDataFailure);
+        }
+    }
 
     /**
      * This function will find the users location and will set the nearest cafeteria based on that
