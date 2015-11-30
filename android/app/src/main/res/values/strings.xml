@@ -23,6 +23,9 @@
     <string name="title_activity_food_menu_item">FoodMenuItemActivity</string>
     <string name="food_menu_search_query_hint">Search Food</string>
     <string name="title_activity_cafeteria_list">List Of Cafeterias</string>
+    <string name="title_activity_preference">PreferenceActivity</string>
+    <string name="hello">Hello World :)</string>
+    <string name="new_preference_hint">Food</string>
 
 
 </resources>
