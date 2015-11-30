@@ -18,6 +18,7 @@ import com.osu.cse.projectblocks.data.Repository;
 import com.osu.cse.projectblocks.models.Cafeteria;
 import com.osu.cse.projectblocks.models.Coordinates;
 
+import java.util.Iterator;
 import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -81,15 +82,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         double lat = location.getLatitude();
         double lon = location.getLongitude();
         float min = (float) Integer.MAX_VALUE;
-        for (int i=0; i<allcafe.size(); i++)
+        for (Iterator<Cafeteria> i = allcafe.iterator(); i.hasNext();)
         {
-            double cafe_lat = allcafe.get(i).getLocation().getCoordinates().getLatitude();
-            double cafe_lon = allcafe.get(i).getLocation().getCoordinates().getLongitude();
+            Cafeteria cafeteria = i.next();
+            double cafe_lat = cafeteria.getLocation().getCoordinates().getLatitude();
+            double cafe_lon = cafeteria.getLocation().getCoordinates().getLongitude();
             float[] results = new float[10];
             Location.distanceBetween(lat, lon, cafe_lat, cafe_lon, results);
             if(results[0] < min){
                 min = results[0];
-                res = allcafe.get(i);
+                res = cafeteria;
             }
         }
         return res;

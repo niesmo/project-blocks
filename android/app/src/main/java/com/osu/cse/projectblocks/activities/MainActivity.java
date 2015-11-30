@@ -96,21 +96,22 @@ public class MainActivity extends AppCompatActivity {
             numblock = savedInstanceState.getInt("NUM");
             totalprice = savedInstanceState.getDouble("Price");
 
-            for(int i=0; i<CustomListViewValuesArr.size(); i++){
-                if(foodname.contains(CustomListViewValuesArr.get(i).getName())){
-                    CustomListViewValuesArr.get(i).setIsSelected(true);
-                    selectedFood.add(CustomListViewValuesArr.get(i));
+            for(Iterator<Food> i = CustomListViewValuesArr.iterator(); i.hasNext();){
+                Food food = i.next();
+                if(foodname.contains(food.getName())){
+                    food.setIsSelected(true);
+                    selectedFood.add(food);
                 }
             }
             if (flag){
                 restmoney = numblock*5-totalprice;
                 showFood = new ArrayList<Food>();
-                for(int i=0; i<selectedFood.size(); i++){
-                    showFood.add(selectedFood.get(i));
+                for(Iterator<Food> i = selectedFood.iterator(); i.hasNext();){
+                    showFood.add(i.next());
                 }
-                for(int i=0; i<CustomListViewValuesArr.size(); i++){
-                    Food temp = CustomListViewValuesArr.get(i);
-                    if ((temp.getPrice()<restmoney) && !showFood.contains(temp)) showFood.add(temp);
+                for(Iterator<Food> i = CustomListViewValuesArr.iterator(); i.hasNext();){
+                    Food food = i.next();
+                    if ((food.getPrice()<restmoney) && !showFood.contains(food)) showFood.add(food);
                 }
                 adapter=new CustomAdapter(CustomListView, showFood);
                 list.setAdapter(adapter);
@@ -158,11 +159,11 @@ public class MainActivity extends AppCompatActivity {
                     flag = true;
                     restmoney = numblock*5-totalprice;
                     showFood = new ArrayList<Food>();
-                    for(int i=0; i<selectedFood.size(); i++){
-                        showFood.add(selectedFood.get(i));
+                    for(Iterator<Food> i = selectedFood.iterator(); i.hasNext();){
+                        showFood.add(i.next());
                     }
-                    for(int i=0; i<CustomListViewValuesArr.size(); i++){
-                        Food temp = CustomListViewValuesArr.get(i);
+                    for(Iterator<Food> i = CustomListViewValuesArr.iterator(); i.hasNext();){
+                        Food temp = i.next();
                         if ((temp.getPrice()<restmoney) && !showFood.contains(temp)) showFood.add(temp);
                     }
                     adapter=new CustomAdapter(CustomListView, showFood);
@@ -268,11 +269,11 @@ public class MainActivity extends AppCompatActivity {
             if(flag){
                 restmoney = numblock*5-totalprice;
                 showFood = new ArrayList<Food>();
-                for(int i=0; i<selectedFood.size(); i++){
-                    showFood.add(selectedFood.get(i));
+                for(Iterator<Food> i = selectedFood.iterator(); i.hasNext();){
+                    showFood.add(i.next());
                 }
-                for(int i=0; i<CustomListViewValuesArr.size(); i++){
-                    Food temp = CustomListViewValuesArr.get(i);
+                for(Iterator<Food> i = CustomListViewValuesArr.iterator(); i.hasNext();){
+                    Food temp = i.next();
                     if ((temp.getPrice()<restmoney) && !showFood.contains(temp)) showFood.add(temp);
                 }
                 adapter=new CustomAdapter(CustomListView, showFood);
@@ -287,11 +288,11 @@ public class MainActivity extends AppCompatActivity {
             if(flag){
                 restmoney = numblock*5-totalprice;
                 showFood = new ArrayList<Food>();
-                for(int i=0; i<selectedFood.size(); i++){
-                    showFood.add(selectedFood.get(i));
+                for(Iterator<Food> i = selectedFood.iterator(); i.hasNext();){
+                    showFood.add(i.next());
                 }
-                for(int i=0; i<CustomListViewValuesArr.size(); i++){
-                    Food temp = CustomListViewValuesArr.get(i);
+                for(Iterator<Food> i = CustomListViewValuesArr.iterator(); i.hasNext();){
+                    Food temp = i.next();
                     if ((temp.getPrice()<restmoney) && !showFood.contains(temp)) showFood.add(temp);
                 }
                 adapter=new CustomAdapter(CustomListView, showFood);
@@ -309,9 +310,6 @@ public class MainActivity extends AppCompatActivity {
             if(numblock<1)
             {
                 mTextView_block.setText("");
-            }
-            else if(numblock==1) {
-                mTextView_block.setText(Integer.toString(numblock) + "BLOCK");
             }
             else {
                 mTextView_block.setText(Integer.toString(numblock) + "BLOCKS");
