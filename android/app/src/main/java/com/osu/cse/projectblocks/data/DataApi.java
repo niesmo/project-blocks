@@ -23,18 +23,23 @@ public class DataApi {
         // Exists only to defeat instantiation.
     }
     public static DataApi getInstance() {
-        if(instance == null) {
-            synchronized(DataApi.class) {
-                if(instance == null) {
-                    instance = new DataApi();
+
+
+            if (instance == null) {
+                synchronized (DataApi.class) {
+                    if (instance == null) {
+                        instance = new DataApi();
+                    }
                 }
             }
-        }
+
         return instance;
     }
 
     public static void getCafeterias(Context c, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener){
         String resource ="cafeterias?limit=100";
+
+
 
         // create the request
         OrchestrateJsonObjectRequest jor = new OrchestrateJsonObjectRequest(resource, listener, errorListener);

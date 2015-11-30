@@ -1,10 +1,13 @@
 package com.osu.cse.projectblocks.activities.cafeteria.list;
 
+import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
-import android.support.v7.app.AppCompatActivity;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,7 +44,7 @@ public class CafeteriaListActivity extends AppCompatActivity {
     // setting up the Orchestrate data parser
     private final OrchestrateDataParser<Cafeteria> cafeteriaParser = new OrchestrateDataParser();
     private final OrchestrateDataParser<Food> foodParser = new OrchestrateDataParser();
-
+    private boolean isConnected;
     // cafeteria menu
 
 
@@ -49,14 +52,45 @@ public class CafeteriaListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cafeteria_list);
+        ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
 
-        // Setting up the db
-        db = DataApi.getInstance();
+        if(!isConnected) {
+            startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), 0);
+        }
+        else {
 
-        // getting all the cafeterias
-        db.getCafeterias(this, this.onCafeteriaDataSuccess, this.onDataFailure);
+            // Setting up the db
+            db = DataApi.getInstance();
+
+            // getting all the cafeterias
+            db.getCafeterias(this, this.onCafeteriaDataSuccess, this.onDataFailure);
+        }
+        }
+
+
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+        if(isConnected) {
+            // Setting up the db
+            db = DataApi.getInstance();
+
+            // getting all the cafeterias
+            db.getCafeterias(this, this.onCafeteriaDataSuccess, this.onDataFailure);
+        }
 
     }
+
 
     /**
      * This function will find the users location and will set the nearest cafeteria based on that
@@ -73,7 +107,7 @@ public class CafeteriaListActivity extends AppCompatActivity {
             location = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
         }
 
-       
+
         if (location == null){
             this.selectedCafeteria = null;
             return;
@@ -175,6 +209,7 @@ public class CafeteriaListActivity extends AppCompatActivity {
                 }
 
             } catch (JSONException e) {
+
                 e.printStackTrace();
             }
         }
@@ -191,10 +226,16 @@ public class CafeteriaListActivity extends AppCompatActivity {
         // get the list view
         ListView cafeteriaList = (ListView) this.findViewById(R.id.cafeteria_list);
 
-        cafeteriaList.setOnItemClickListener(this.cafeteriaItemClicked);
+            cafeteriaList.setOnItemClickListener(this.cafeteriaItemClicked);
+            // connect the adapter
+            cafeteriaList.setAdapter(adapter);
 
-        // connect the adapter
-        cafeteriaList.setAdapter(adapter);
+
+
+
+
+
+
     }
 
 

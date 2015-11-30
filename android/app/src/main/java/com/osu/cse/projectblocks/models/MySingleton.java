@@ -76,6 +76,10 @@ public class MySingleton {
             Log.w("CACHE","Can't find External Cache Dir, "+ defaultCache);
             rootCache = defaultCache;
         }
+        else
+        {
+            Log.w("CACHE","We find External Cache Dir, "+ rootCache);
+        }
 
         File cacheDir = new File(rootCache,DEFAULT_CACHE_DIR);
         cacheDir.mkdirs();
