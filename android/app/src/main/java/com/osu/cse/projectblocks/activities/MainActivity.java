@@ -24,6 +24,7 @@ import com.osu.cse.projectblocks.data.Repository;
 import com.osu.cse.projectblocks.models.Cafeteria;
 import com.osu.cse.projectblocks.models.Food;
 
+import java.lang.reflect.Array;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private double restmoney = 0;
     private List<Food> selectedFood = new ArrayList<>();
     private List<Food> showFood = new ArrayList<>();
+    DecimalFormat df = new DecimalFormat("0.00");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,9 +87,50 @@ public class MainActivity extends AppCompatActivity {
 
 
         /**************** Create Custom Adapter *********/
-        showFood = CustomListViewValuesArr;
-        adapter=new CustomAdapter(CustomListView, showFood);
-        list.setAdapter(adapter);
+        // Check whether we're recreating a previously destroyed instance
+        if (savedInstanceState != null) {
+            // Restore value of members from saved state
+            flag = savedInstanceState.getBoolean("LOCK");
+            ArrayList<String> foodname = savedInstanceState.getStringArrayList("FOOD");
+            numblock = savedInstanceState.getInt("NUM");
+            totalprice = savedInstanceState.getDouble("Price");
+
+            for(int i=0; i<CustomListViewValuesArr.size(); i++){
+                if(foodname.contains(CustomListViewValuesArr.get(i).getName())){
+                    CustomListViewValuesArr.get(i).setIsSelected(true);
+                    selectedFood.add(CustomListViewValuesArr.get(i));
+                }
+            }
+            if (flag){
+                restmoney = numblock*5-totalprice;
+                showFood = new ArrayList<Food>();
+                for(int i=0; i<selectedFood.size(); i++){
+                    showFood.add(selectedFood.get(i));
+                }
+                for(int i=0; i<CustomListViewValuesArr.size(); i++){
+                    Food temp = CustomListViewValuesArr.get(i);
+                    if ((temp.getPrice()<restmoney) && !showFood.contains(temp)) showFood.add(temp);
+                }
+                adapter=new CustomAdapter(CustomListView, showFood);
+                list.setAdapter(adapter);
+            }
+            else{
+                showFood = CustomListViewValuesArr;
+                adapter=new CustomAdapter(CustomListView, showFood);
+                list.setAdapter(adapter);
+            }
+            if(numblock<1) {
+                mTextView_block.setText("");
+            }
+            else {
+                mTextView_block.setText(Integer.toString(numblock) + "BLOCKS");
+            }
+            mTextView_money.setText("$" + df.format(totalprice));
+        } else {
+            showFood = CustomListViewValuesArr;
+            adapter=new CustomAdapter(CustomListView, showFood);
+            list.setAdapter(adapter);
+        }
 
         mMaximum.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -190,6 +233,21 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        // Save the Flag and name of selected food
+        savedInstanceState.putBoolean("LOCK", flag);
+        ArrayList<String> foodname = new ArrayList<>();
+        for(int i=0; i<selectedFood.size(); i++){
+            foodname.add(selectedFood.get(i).getName());
+        }
+        savedInstanceState.putStringArrayList("FOOD",foodname);
+        // Save the number of block and total money
+        savedInstanceState.putInt("NUM", numblock);
+        savedInstanceState.putDouble("Price", totalprice);
+        // Always call the superclass so it can save the view hierarchy state
+        super.onSaveInstanceState(savedInstanceState);
+    }
 
 
     /*****************  This function used by adapter ****************/
@@ -197,8 +255,6 @@ public class MainActivity extends AppCompatActivity {
     {
 
         Food tempValues = ( Food ) showFood.get(mPosition);
-
-        DecimalFormat df = new DecimalFormat("0.00");
 
         if(tempValues.isSelected()) {
             tempValues.setIsSelected(false);
@@ -262,7 +318,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // SHOW ALERT
-
-       // Toast.makeText(CustomListView, tempValues.getName() + " FoodPrice:" + tempValues.getPrice(), Toast.LENGTH_LONG).show();
     }
 }
