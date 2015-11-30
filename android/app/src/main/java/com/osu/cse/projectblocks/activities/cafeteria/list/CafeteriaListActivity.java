@@ -1,8 +1,11 @@
 package com.osu.cse.projectblocks.activities.cafeteria.list;
 
+import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -41,7 +44,7 @@ public class CafeteriaListActivity extends AppCompatActivity {
     // setting up the Orchestrate data parser
     private final OrchestrateDataParser<Cafeteria> cafeteriaParser = new OrchestrateDataParser();
     private final OrchestrateDataParser<Food> foodParser = new OrchestrateDataParser();
-
+    private boolean isConnected;
     // cafeteria menu
 
 
@@ -49,13 +52,38 @@ public class CafeteriaListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cafeteria_list);
+        ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
-        // Setting up the db
-        db = DataApi.getInstance();
+        if(!isConnected) {
+            startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), 0);
+        }
+        else {
 
-        // getting all the cafeterias
-        db.getCafeterias(this, this.onCafeteriaDataSuccess, this.onDataFailure);
+            // Setting up the db
+            db = DataApi.getInstance();
 
+            // getting all the cafeterias
+            db.getCafeterias(this, this.onCafeteriaDataSuccess, this.onDataFailure);
+        }
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        if(isConnected) {
+            // Setting up the db
+            db = DataApi.getInstance();
+
+            // getting all the cafeterias
+            db.getCafeterias(this, this.onCafeteriaDataSuccess, this.onDataFailure);
+        }
     }
 
     /**
