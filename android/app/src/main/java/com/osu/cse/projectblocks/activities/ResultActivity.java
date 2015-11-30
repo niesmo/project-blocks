@@ -19,6 +19,7 @@ import com.osu.cse.projectblocks.models.Food;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 public class ResultActivity extends AppCompatActivity {
@@ -48,6 +49,11 @@ public class ResultActivity extends AppCompatActivity {
             textview.setText("No More You Can Have!");
         }else{
             allfood = Repository.getAllFoods();
+            //delete all the foods whose price are greater than the rest money
+            for(int i=0; i<allfood.size(); i++){
+                Food temp = allfood.get(i);
+                if(temp.getPrice()>money) allfood.remove(i);
+            }
             len = allfood.size();
             combination(0, 0.0, new ArrayList<String>());
             textview.setText("What Else You Can Have!");
@@ -61,11 +67,12 @@ public class ResultActivity extends AppCompatActivity {
         if((money-sum) < 0.85){
             StringBuffer sb = new StringBuffer();
             HashMap<String, Integer> map = new HashMap<>();
-            for(int i=0; i<list.size(); i++){
+            int l = list.size();
+            for(int i=0; i<l; i++){
                 if(map.containsKey(list.get(i))) map.put(list.get(i), map.get(list.get(i))+1);
                 else map.put(list.get(i), 1);
             }
-            for(int i=0; i<list.size(); i++){
+            for(int i=0; i<l; i++){
                 if((i!=0) && (list.get(i)==list.get(i-1))) continue;
                 sb.append("\n");
                 sb.append(list.get(i));
