@@ -1,11 +1,14 @@
 package com.osu.cse.projectblocks.activities.cafeteria.list;
 
+//import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -52,18 +55,30 @@ public class CafeteriaListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cafeteria_list);
+        //check whether the network connection is available
         ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-
         if(!isConnected) {
-            startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), 0);
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+            builder1.setMessage("Network Connection is unavailable! If your phone is in Airplane Mode, do you want to disable it?");
+            builder1.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), 0);
+                }
+            });
+            builder1.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    finish();
+                }
+            });
+
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
         }
         else {
-
             // Setting up the db
             db = DataApi.getInstance();
-
             // getting all the cafeterias
             db.getCafeterias(this, this.onCafeteriaDataSuccess, this.onDataFailure);
         }
@@ -75,6 +90,7 @@ public class CafeteriaListActivity extends AppCompatActivity {
         super.onResume();
         ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
 
+        //check whether the network connection is available
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
         if(isConnected) {
