@@ -26,10 +26,6 @@
         android:orderInCategory="5"
         app:showAsAction="never"
         android:title="@string/preference_menu_title"/>
-    <item
-        android:id="@+id/history"
-        android:orderInCategory="6"
-        app:showAsAction="never"
-        android:title="@string/history_menu_title"/>
+
 </menu>
 

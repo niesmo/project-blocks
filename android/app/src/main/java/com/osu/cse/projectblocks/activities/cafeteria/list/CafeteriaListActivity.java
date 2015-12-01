@@ -1,6 +1,5 @@
 package com.osu.cse.projectblocks.activities.cafeteria.list;
 
-//import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -49,7 +48,6 @@ public class CafeteriaListActivity extends AppCompatActivity {
     private final OrchestrateDataParser<Food> foodParser = new OrchestrateDataParser();
     private boolean isConnected;
     // cafeteria menu
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,11 +150,6 @@ public class CafeteriaListActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         Intent i;
         switch (item.getItemId()) {
-            // home page menu item
-            case R.id.home_menu_item:
-                i = new Intent(CafeteriaListActivity.this, MainActivity.class);
-                startActivity(i);
-                break;
 
             // Find food menu item
             case R.id.find_food:
@@ -168,21 +161,11 @@ public class CafeteriaListActivity extends AppCompatActivity {
             case R.id.find_cafe:
                 return true;
 
-            // navigate to the nearest cafeteria menu item
-            case R.id.nearest_cafe:
-                i = new Intent(CafeteriaListActivity.this, MapsActivity.class);
-                startActivity(i);
-                break;
-
             // preference menu item
             case R.id.setting_preference:
                 i = new Intent(CafeteriaListActivity.this, PreferenceActivity.class);
                 startActivity(i);
                 break;
-
-            // history menu item
-            case R.id.history:
-                return true;
 
         }
 
