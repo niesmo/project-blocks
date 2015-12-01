@@ -1,6 +1,8 @@
 package com.osu.cse.projectblocks.activities;
 
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
@@ -206,6 +208,16 @@ public class MainActivity extends AppCompatActivity {
 
             // navigate to the nearest cafeteria menu item
             case R.id.nearest_cafe:
+                LocationManager locationManager = (LocationManager) getSystemService(MainActivity.this.LOCATION_SERVICE);
+
+                @SuppressWarnings("ResourceType")
+                Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                if (location == null) {
+                    location = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
+                }
+                if (location == null){
+                    return true;
+                }
                 i = new Intent(MainActivity.this, MapsActivity.class);
                 startActivity(i);
                 break;
@@ -215,10 +227,6 @@ public class MainActivity extends AppCompatActivity {
                 i = new Intent(MainActivity.this, PreferenceActivity.class);
                 startActivity(i);
                 break;
-
-            // history menu item
-            case R.id.history:
-                return true;
 
         }
 

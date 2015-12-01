@@ -13,7 +13,11 @@
         android:text="Cafeterias On Campus"
         android:id="@+id/textView"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textColor="#ff000000"
+        android:textStyle="bold"
+        android:textSize="25dp"
+        android:textIsSelectable="false" />
 
     <ListView
         android:layout_width="wrap_content"

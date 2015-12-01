@@ -1,6 +1,8 @@
 package com.osu.cse.projectblocks.activities.food.menu;
 
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -116,6 +118,16 @@ public class FoodMenuActivity extends AppCompatActivity {
 
             // navigate to the nearest cafeteria menu item
             case R.id.nearest_cafe:
+                LocationManager locationManager = (LocationManager) getSystemService(FoodMenuActivity.this.LOCATION_SERVICE);
+
+                @SuppressWarnings("ResourceType")
+                Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                if (location == null) {
+                    location = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
+                }
+                if (location == null){
+                    return true;
+                }
                 i = new Intent(FoodMenuActivity.this, MapsActivity.class);
                 startActivity(i);
                 break;
@@ -125,10 +137,6 @@ public class FoodMenuActivity extends AppCompatActivity {
                 i = new Intent(FoodMenuActivity.this, PreferenceActivity.class);
                 startActivity(i);
                 break;
-
-            // history menu item
-            case R.id.history:
-                return true;
 
         }
 
