@@ -17,7 +17,7 @@ public class NumberAdderTest extends InstrumentationTestCase {
     public void testNumberAdder(){
         int res = NumberAdder.addNumbers(3, 5);
 
-        assertEquals(9, res);
+        assertEquals(8, res);
     }
 
     @Override
